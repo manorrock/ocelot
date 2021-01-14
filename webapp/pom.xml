@@ -15,7 +15,7 @@
     <artifactId>ocelot-webapp</artifactId>
     <name>Manorrock Ocelot - Web Application</name>
     <build>
-        <finalName>ocelot-webapp</finalName>
+        <finalName>ocelot</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
