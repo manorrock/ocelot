@@ -4,10 +4,10 @@ RUN apt-get update && \
     apt-get install -y curl dnsutils gzip software-properties-common tar && \
     rm -rf /var/lib/apt/lists/*
 RUN cd /usr/local && \
-    curl --insecure -L -O https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.8%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.8_10.tar.gz && \
-    tar xfvz OpenJDK11U-jdk_x64_linux_hotspot_11.0.8_10.tar.gz && \
-    mv jdk-11.0.8+10 jdk && \
-    rm OpenJDK11U-jdk_x64_linux_hotspot_11.0.8_10.tar.gz
+    curl --insecure -L -O https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz && \
+    tar xfvz OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz && \
+    mv jdk-11.0.10+9 jdk && \
+    rm OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz
 ENV PATH=$PATH:/usr/local/jdk/bin
 RUN cd /usr/local && \
     curl --insecure -L -O https://archive.apache.org/dist/tomcat/tomcat-10/v10.0.0/bin/apache-tomcat-10.0.0.tar.gz && \
