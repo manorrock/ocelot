@@ -29,7 +29,9 @@
  */
 package com.manorrock.ocelot.cli;
 
+import java.io.File;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Parameters;
 
 /**
  * The build command.
@@ -43,5 +45,11 @@ import picocli.CommandLine.Command;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Command(name = "build", mixinStandardHelpOptions = true)
-public class BuildCommand {   
+public class BuildCommand {
+    
+    /**
+     * Stores the file/directory we are doing the build for.
+     */
+    @Parameters(index = "0", description = "The file/directory to build for.")
+    private File file;
 }
