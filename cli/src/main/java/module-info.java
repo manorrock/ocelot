@@ -27,22 +27,10 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.ocelot.cli;
 
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-import picocli.CommandLine.IVersionProvider;
-
-/**
- * The VersionProvider for the CLI.
- * 
- * @author Manfred Riem (mriem@manorrock.com)
- */
-class CliVersion implements IVersionProvider {
-
-    @Override
-    public String[] getVersion() throws Exception {
-        Manifest manifest = new Manifest(CliVersion.class.getResourceAsStream("/META-INF/MANIFEST.MF"));
-        return new String[] { "v" + manifest.getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION) };
-    }
+module com.manorrock.ocelot.cli {
+    
+    exports com.manorrock.ocelot.cli;
+    opens com.manorrock.ocelot.cli;
+    requires info.picocli;
 }

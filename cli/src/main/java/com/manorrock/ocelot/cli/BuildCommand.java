@@ -30,6 +30,7 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
@@ -40,16 +41,24 @@ import picocli.CommandLine.Parameters;
  *  This command will build a project into an image. If will try to use sensible
  *  defaults to build the image. If it fails to determine those defaults it will
  *  echo what is is unable to determine with a suggested course of action.
- * </p>
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Command(name = "build", mixinStandardHelpOptions = true)
-public class BuildCommand {
+public class BuildCommand implements Callable<Integer> {
     
     /**
      * Stores the file/directory we are doing the build for.
      */
     @Parameters(index = "0", description = "The file/directory to build for.")
     private File file;
+    
+    @Override
+    public Integer call() throws Exception {
+        if (file == null) {
+            file = new File(".");
+        }
+        System.out.println("Processing " + file.getName());
+        return 0;
+    }
 }
