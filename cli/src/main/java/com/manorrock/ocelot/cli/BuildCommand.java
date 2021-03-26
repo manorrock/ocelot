@@ -30,13 +30,14 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
 /**
  * The build command.
- * 
+ *
  * <p>
  *  This command will build a project into an image. If will try to use sensible
  *  defaults to build the image. If it fails to determine those defaults it will
@@ -48,17 +49,26 @@ import picocli.CommandLine.Parameters;
 public class BuildCommand implements Callable<Integer> {
     
     /**
-     * Stores the file/directory we are doing the build for.
+     * Stores the list of files/directories to be build.
      */
-    @Parameters(index = "0", description = "The file/directory to build for.")
-    private File file;
-    
+    @Parameters(index = "0..*",
+            description = "The list of files/directories to build\n"
+            + "When not supplied the current directory will be used")
+    private List<File> files;
+
     @Override
     public Integer call() throws Exception {
-        if (file == null) {
-            file = new File(".");
+        if (files != null && !files.isEmpty()) {
+            files.forEach(file -> {
+                processFile(file);
+            });
         }
-        System.out.println("Processing " + file.getName());
         return 0;
+    }
+
+    private void processFile(File file) {
+        System.out.println("Processing - " + file.getName());
+        System.out.println("Absolute path : " + file.getAbsolutePath());
+        System.out.println("Directory : " + file.isDirectory());
     }
 }
