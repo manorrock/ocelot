@@ -1,3 +1,3 @@
 FROM adoptopenjdk/openjdk11:slim
 WORKDIR /mnt
-ENTRYPOINT ["java"]
+ENTRYPOINT ["java", "-classpath", "."]
