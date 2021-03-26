@@ -30,10 +30,7 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
-<<<<<<< HEAD
 import java.util.List;
-=======
->>>>>>> issue-29
 import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
@@ -54,7 +51,6 @@ public class BuildCommand implements Callable<Integer> {
     /**
      * Stores the list of files/directories to be build.
      */
-<<<<<<< HEAD
     @Parameters(index = "0..*",
             description = "The list of files/directories to build\n"
             + "When not supplied the current directory will be used")
@@ -75,17 +71,4 @@ public class BuildCommand implements Callable<Integer> {
         System.out.println("Absolute path : " + file.getAbsolutePath());
         System.out.println("Directory : " + file.isDirectory());
     }
-=======
-    @Parameters(index = "0", description = "The file/directory to build for.")
-    private File file;
-    
-    @Override
-    public Integer call() throws Exception {
-        if (file == null) {
-            file = new File(".");
-        }
-        System.out.println("Processing " + file.getName());
-        return 0;
-    }
->>>>>>> issue-29
 }
