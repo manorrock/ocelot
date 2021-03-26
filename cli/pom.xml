@@ -66,10 +66,40 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>jlink</id>
+            <id>jlink-dist</id>
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <id>default-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <formats>
+                                <format>tar.gz</format>
+                                <format>zip</format>
+                            </formats>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>src/main/assembly/distribution.xml</descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jlink-image</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
                         <version>3.2.0</version>
                         <executions>

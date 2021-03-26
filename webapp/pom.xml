@@ -39,14 +39,14 @@
     <dependencies>
         <dependency>
             <groupId>org.glassfish</groupId>
-            <artifactId>javax.faces</artifactId>
-            <version>2.3.9</version>
+            <artifactId>jakarta.faces</artifactId>
+            <version>2.3.14</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-shaded</artifactId>
-            <version>3.1.5.SP1</version>
+            <version>3.1.6.Final</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
