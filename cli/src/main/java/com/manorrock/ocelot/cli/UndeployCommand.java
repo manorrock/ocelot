@@ -32,15 +32,15 @@ package com.manorrock.ocelot.cli;
 import picocli.CommandLine.Command;
 
 /**
- * The deploy command.
- * 
+ * The undeploy command.
+ *
  * <p>
- *  This command will deploy the image to a target environment. It will try to
- *  use sensible defaults. If it fails to determine the defaults it will suggest
- *  a course of action.
- * 
+ * This command undeploys a previously deployed image from the target
+ * environment. It will try to use sensible defaults. If it fails to determine
+ * the defaults it will suggest a course of action.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Command(name = "deploy", mixinStandardHelpOptions = true)
-public class DeployCommand {   
+@Command(name = "undeploy", mixinStandardHelpOptions = true)
+public class UndeployCommand {
 }
