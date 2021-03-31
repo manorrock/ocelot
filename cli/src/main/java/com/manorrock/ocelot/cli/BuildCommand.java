@@ -39,7 +39,7 @@ import picocli.CommandLine.Parameters;
  * The build command.
  *
  * <p>
- *  This command will build a project into an image. If will try to use sensible
+ *  This command will build a project into an image. It will try to use sensible
  *  defaults to build the image. If it fails to determine those defaults it will
  *  echo what is is unable to determine with a suggested course of action.
  * 
