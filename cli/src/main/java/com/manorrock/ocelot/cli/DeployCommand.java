@@ -44,7 +44,7 @@ import picocli.CommandLine.Parameters;
  * The deploy command.
  *
  * <p>
- * This command will deploy the image to a target environment. It will try to
+ * This command will deploy the image to a target runtime. It will try to
  * use sensible defaults. If it fails to determine the defaults it will suggest
  * a course of action.
  * </p>
