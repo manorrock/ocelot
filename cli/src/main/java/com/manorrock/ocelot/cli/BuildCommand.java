@@ -30,45 +30,135 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
+import static java.lang.System.Logger.Level.INFO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 /**
  * The build command.
  *
  * <p>
- *  This command will build a project into an image. It will try to use sensible
- *  defaults to build the image. If it fails to determine those defaults it will
- *  echo what is is unable to determine with a suggested course of action.
- * 
+ * This command will build a project into an image. It will try to use sensible
+ * defaults to build the image. If it fails to determine those defaults it will
+ * echo what is is unable to determine with a suggested course of action.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Command(name = "build", mixinStandardHelpOptions = true)
 public class BuildCommand implements Callable<Integer> {
+
+    /**
+     * Stores the logger.
+     */
+    private static final System.Logger LOGGER = System.getLogger(BuildCommand.class.getName());
+
+    /**
+     * Stores the file/directory to build.
+     */
+    @Parameters(index = "0",
+            description = "The file/directory to build. When not supplied the current directory will be used.")
+    private List<String> file;
+
+    /**
+     * Stores the image name.
+     */
+    @Option(names = "--image", description = "The image name.")
+    private String imageName;
+
+    /**
+     * Stores the runtime.
+     */
+    @Option(names = "--runtime", description = "The build runtime (e.g. Docker, AzureCR).", defaultValue = "docker")
+    private String runtime;
+
+    /**
+     * Stores the timeout.
+     */
+    @Option(names = "--timeout", description = "The timeout before aborting the deploy.")
+    private long timeout = 600;
+
+    /**
+     * Stores the timeout unit.
+     */
+    @Option(names = "--timeout-unit", description = "The timeout unit (e.g. seconds, minutes, hours, days).")
+    private String timeoutUnit = "seconds";
     
     /**
-     * Stores the list of files/directories to be build.
+     * Stores the verbose flag.
      */
-    @Parameters(index = "0..*",
-            description = "The list of files/directories to build\n"
-            + "When not supplied the current directory will be used")
-    private List<File> files;
+    @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
+    private boolean verbose = false;
+    
+    /**
+     * Deploy the given image locally using Docker.
+     *
+     * @param imageName the image name.
+     */
+    private int buildOnDocker(String imageName) throws Exception {
+        if (verbose) {
+            LOGGER.log(INFO, "Building " + imageName);
+        }
+        ProcessBuilder builder = new ProcessBuilder();
+        ArrayList<String> processArguments = new ArrayList<>();
+        processArguments.add("docker");
+        processArguments.add("build");
+        processArguments.add("-t");
+        processArguments.add(imageName);
+        processArguments.add("-f");
+        processArguments.add("Dockerfile");
+        processArguments.add(".");
+        Process process = builder.command(processArguments).inheritIO().start();
+        process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
+        return process.exitValue();
+    }
 
+    /**
+     * Call the command.
+     *
+     * @return 0 when completed successfully.
+     * @throws Exception when a serious error occurs.
+     */
     @Override
     public Integer call() throws Exception {
-        if (files != null && !files.isEmpty()) {
-            files.forEach(file -> {
-                processFile(file);
-            });
+        if (imageName != null) {
+        } else if (file == null) {
+            imageName = new File("").getCanonicalFile().getName();
+        } else {
+            imageName = file.get(0);
+        }
+        if (runtime != null) {
+            switch (runtime.toLowerCase()) {
+                case "docker":
+                    return buildOnDocker(normalizeImageName(imageName));
+                default:
+                    break;
+            }
         }
         return 0;
     }
 
-    private void processFile(File file) {
-        System.out.println("Processing - " + file.getName());
-        System.out.println("Absolute path : " + file.getAbsolutePath());
-        System.out.println("Directory : " + file.isDirectory());
+    /**
+     * Normalize the image name.
+     * 
+     * @param imageName the image name.
+     * @return the normalized image name.
+     */
+    private String normalizeImageName(String imageName) {
+        if (verbose) {
+            LOGGER.log(INFO, "Normalizing image name: " + imageName);
+        }
+        if (imageName.contains(".")) {
+            imageName = imageName.substring(0, imageName.indexOf("."));
+        }
+        imageName = imageName.toLowerCase();
+        if (verbose) {
+            LOGGER.log(INFO, "Normalized image name to: " + imageName);
+        }
+        return imageName;
     }
 }

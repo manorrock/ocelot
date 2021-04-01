@@ -60,10 +60,10 @@ public class DeployCommand implements Callable<Integer> {
     private static final Logger LOGGER = System.getLogger(DeployCommand.class.getName());
 
     /**
-     * Stores the file/directory to run.
+     * Stores the file/directory to deploy.
      */
     @Parameters(index = "0",
-            description = "The file/directory to run. When not supplied the current directory will be used.")
+            description = "The file/directory to deploy. When not supplied the current directory will be used.")
     private List<String> file;
 
     /**
