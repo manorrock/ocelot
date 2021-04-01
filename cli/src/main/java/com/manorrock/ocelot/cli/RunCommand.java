@@ -158,8 +158,7 @@ public class RunCommand implements Callable<Integer> {
         
         // call the deploy command to deploy the job.
         // call the log command to get the log for the job.
-        // call the undeploy command to undeploy the job.h0tm@il1
-        
+        // call the undeploy command to undeploy the job.        
         
         return 0;
     }
