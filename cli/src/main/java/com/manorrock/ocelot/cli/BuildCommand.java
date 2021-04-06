@@ -161,4 +161,15 @@ public class BuildCommand implements Callable<Integer> {
         }
         return imageName;
     }
+    
+    /**
+     * Determine which build images to use.
+     * 
+     * @return list of build images to use.
+     */
+    private List<String> determineBuildImages() {
+        ArrayList<String> result = new ArrayList<>();
+        result.add("dotjava11");
+        return result;
+    }
 }
