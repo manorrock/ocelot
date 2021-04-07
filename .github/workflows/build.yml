@@ -62,7 +62,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Build with Maven
-      run: mvn -B -ntp package
-    - name: Build image
+    - name: Build project
+      run: mvn -B -ntp install
+    - name: Create JLink image
       run: mvn -B -ntp -P image install
+    - name: Create .tar.gz distribution
+      run: mvn -B -ntp -P distribution install
+    - name: Deploy .tar.gz distribution
+      run: |
+        cd cli-macos
+        mvn -B -ntp deploy

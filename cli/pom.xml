@@ -66,7 +66,7 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>jlink-dist</id>
+            <id>distribution</id>
             <build>
                 <plugins>
                     <plugin>
