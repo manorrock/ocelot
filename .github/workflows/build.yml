@@ -14,8 +14,8 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn -B -ntp package
-    - name: Build JLink image
-      run: mvn -B -ntp -P jlink-image install
+    - name: Build distribution image
+      run: mvn -B -ntp -P image install
     - name: Login to Docker Hub
       uses: azure/docker-login@v1
       with:
@@ -52,8 +52,8 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn -B -ntp package
-    - name: Build JLink image
-      run: mvn -B -ntp -P jlink-image install
+    - name: Build image
+      run: mvn -B -ntp -P image install
   macos:
     runs-on: macos-latest
     steps:
@@ -64,7 +64,5 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn -B -ntp package
-    - name: Build JLink image
-      run: mvn -B -ntp -P jlink-image install
-      
-        
+    - name: Build image
+      run: mvn -B -ntp -P image install

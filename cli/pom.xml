@@ -95,7 +95,7 @@
             </build>
         </profile>
         <profile>
-            <id>jlink-image</id>
+            <id>image</id>
             <build>
                 <plugins>
                     <plugin>
@@ -116,6 +116,10 @@
                                         <resource>
                                             <directory>${project.build.directory}</directory>
                                             <filtering>false</filtering>
+                                            <excludes>
+                                                <exclude>*-javadoc.jar</exclude>
+                                                <exclude>*-sources.jar</exclude>
+                                            </excludes>
                                             <includes>
                                                 <include>*.jar</include>
                                             </includes>
@@ -150,7 +154,7 @@
                                     <noManPages>true</noManPages>
                                     <noHeaderFiles>true</noHeaderFiles>
                                     <compression>2</compression>
-                                    <outputDirectory>${project.build.directory}/jlink</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/image</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>

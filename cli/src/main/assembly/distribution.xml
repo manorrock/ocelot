@@ -9,7 +9,7 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>${project.build.directory}/jlink</directory>
+            <directory>${project.build.directory}/image</directory>
             <outputDirectory></outputDirectory>
         </fileSet>
     </fileSets>
