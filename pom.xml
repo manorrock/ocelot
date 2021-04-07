@@ -97,6 +97,12 @@
     </modules>
     <profiles>
         <profile>
+            <id>linux</id>
+            <modules>
+                <module>cli-linux</module>
+            </modules>
+        </profile>
+        <profile>
             <id>macos</id>
             <modules>
                 <module>cli-macos</module>
