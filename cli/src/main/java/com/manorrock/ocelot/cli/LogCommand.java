@@ -34,11 +34,10 @@ import picocli.CommandLine.Command;
 /**
  * The log command.
  * 
- * <[>
+ * <p>
  *  This command will initiate stream logs for the given instance to your
  *  terminal. Note if the application is running more than one instance it will
  *  stream the logs of the first instance.
- * </p>
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
