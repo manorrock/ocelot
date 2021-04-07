@@ -129,6 +129,12 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>windows</id>
+            <modules>
+                <module>cli-windows</module>
+            </modules>
+        </profile>
     </profiles>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
