@@ -5,7 +5,7 @@ As a developer you have so many Cloud technologies that you have to use or you h
 ## Quick installation
 
 ```shell
-  curl https://github.com/ | bash
+  curl https://raw.githubusercontent.com/manorrock/ocelot/master/install.sh | bash
 ```
 
 ## Quick example
