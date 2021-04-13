@@ -8,7 +8,7 @@ As a developer you have so many Cloud technologies that you have to use or you h
   curl https://raw.githubusercontent.com/manorrock/ocelot/master/install.sh | bash
 ```
 
-## Quick example
+## Quick local example
 
 Lets deploy a local PostgreSQL database loaded with data and ready for you to use.
 
