@@ -219,7 +219,7 @@
                             </execution>
                             <execution>
                                 <id>attach-artifacts</id>
-                                <phase>install</phase>
+                                <phase>verify</phase>
                                 <goals>
                                     <goal>attach-artifact</goal>
                                 </goals>
@@ -241,7 +241,7 @@
                         <executions>
                             <execution>
                                 <id>jpackage</id>
-                                <phase>verify</phase>
+                                <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
