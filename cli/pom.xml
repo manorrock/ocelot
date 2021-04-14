@@ -271,7 +271,7 @@
             </build>
         </profile>
         <profile>
-            <id>macos</id>
+            <id>windows</id>
             <build>
                 <plugins>
                     <plugin>
