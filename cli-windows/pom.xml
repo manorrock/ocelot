@@ -21,9 +21,17 @@
                         <id>copy-dependencies</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <artifactItems>
+                                <artifact>
+                                    <groupId>com.manorrock.ocelot</groupId>
+                                    <artifactId>ocelot-cli</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>msi</type>
+                                </artifact>
+                            </artifactItems>
                             <overWriteReleases>true</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <outputDirectory>${project.build.directory}</outputDirectory>
@@ -45,8 +53,8 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${build.directory}/ocelot-cli-${project.version}.zip</file>
-                                    <type>zip</type>
+                                    <file>${build.directory}/ocelot-cli-${project.version}.msi</file>
+                                    <type>msi</type>
                                 </artifact>
                             </artifacts>
                         </configuration>
@@ -61,7 +69,7 @@
             <artifactId>ocelot-cli</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
-            <type>zip</type>
+            <type>msi</type>
         </dependency>
     </dependencies>
 </project>
