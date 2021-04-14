@@ -129,7 +129,7 @@
                                 <configuration>
                                     <artifacts>
                                         <artifact>
-                                            <file>${project.build.directory}/ocelot-cli-${appVersion}.tar.gz</file>
+                                            <file>${project.build.directory}/ocelot-cli-${project.version}.tar.gz</file>
                                             <type>tar.gz</type>
                                         </artifact>
                                     </artifacts>
