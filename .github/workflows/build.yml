@@ -53,11 +53,9 @@ jobs:
         server-password: MAVEN_PASSWORD
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create JLink image
-      run: mvn -B -ntp -P image install
-    - name: Create .tar.gz distribution
-      run: mvn -B -ntp -P distribution install
-    - name: Deploy .tar.gz distribution
+    - name: Create Linux .tar.gz file
+      run: mvn -B -ntp -P linux install
+    - name: Deploy Linux .tar.gz file
       run: |
         cd cli-linux
         mvn -B -ntp deploy
