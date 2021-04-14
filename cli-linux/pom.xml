@@ -21,9 +21,17 @@
                         <id>copy-dependencies</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <artifactItems>
+                                <artifact>
+                                    <groupId>com.manorrock.ocelot</groupId>
+                                    <artifactId>ocelot-cli</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>tar.gz</type>
+                                </artifact>
+                            </artifactItems>
                             <overWriteReleases>true</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <outputDirectory>${project.build.directory}</outputDirectory>

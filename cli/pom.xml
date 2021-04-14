@@ -66,36 +66,7 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>distribution</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <version>3.3.0</version>
-                        <executions>
-                            <execution>
-                                <id>default-assembly</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <formats>
-                                <format>tar.gz</format>
-                                <format>zip</format>
-                            </formats>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <descriptors>src/main/assembly/distribution.xml</descriptors>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>image</id>
+            <id>linux</id>
             <build>
                 <plugins>
                     <plugin>
@@ -104,8 +75,8 @@
                         <version>3.2.0</version>
                         <executions>
                             <execution>
-                                <id>copy-resources</id>
-                                <phase>verify</phase>
+                                <id>copy-jars</id>
+                                <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
@@ -130,38 +101,101 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.moditect</groupId>
-                        <artifactId>moditect-maven-plugin</artifactId>
-                        <version>1.0.0.RC1</version>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.2.0</version>
                         <executions>
                             <execution>
-                                <id>create-runtime-image</id>
-                                <phase>verify</phase>
+                                <id>regex-property</id>
+                                <phase>validate</phase>
                                 <goals>
-                                    <goal>create-runtime-image</goal>
+                                    <goal>regex-property</goal>
                                 </goals>
                                 <configuration>
-                                    <modulePath>
-                                        <path>${project.build.directory}/jars</path>
-                                    </modulePath>
-                                    <modules>
-                                        <module>com.manorrock.ocelot.cli</module>
-                                    </modules>
-                                    <launcher>
-                                        <name>mo</name>
-                                        <module>com.manorrock.ocelot.cli</module>
-                                    </launcher>
-                                    <noManPages>true</noManPages>
-                                    <noHeaderFiles>true</noHeaderFiles>
-                                    <compression>2</compression>
-                                    <outputDirectory>${project.build.directory}/image</outputDirectory>
+                                    <name>appVersion</name>
+                                    <value>${project.version}</value>
+                                    <regex>-SNAPSHOT+$</regex>
+                                    <replacement></replacement>
+                                    <failIfNoMatch>false</failIfNoMatch>
+                                    <elseValue>${project.version}</elseValue>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>${project.build.directory}/ocelot-cli-${appVersion}.tar.gz</file>
+                                            <type>tar.gz</type>
+                                        </artifact>
+                                    </artifacts>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>jpackage</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${java.home}/bin/jpackage</executable>
+                                    <workingDirectory>${project.build.directory}</workingDirectory>
+                                    <arguments>
+                                        <argument>--type</argument>
+                                        <argument>app-image</argument>
+                                        <argument>--app-version</argument>
+                                        <argument>${appVersion}</argument>
+                                        <argument>-n</argument>
+                                        <argument>ocelot-cli</argument>
+                                        <argument>-p</argument>
+                                        <argument>${project.build.directory}/jars</argument>
+                                        <argument>-m</argument>
+                                        <argument>com.manorrock.ocelot.cli/com.manorrock.ocelot.cli.Cli</argument>
+                                        <argument>--add-launcher</argument>
+                                        <argument>mo=${basedir}/src/main/windows/mo.properties</argument>
+                                        <argument>--dest</argument>
+                                        <argument>${project.build.directory}/image</argument>
+                                        <argument>--verbose</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <id>default-assembly</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <formats>
+                                <format>tar.gz</format>
+                            </formats>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>src/main/assembly/distribution.xml</descriptors>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
-        </profile>
+        </profile>        
         <profile>
             <id>macos</id>
             <build>
