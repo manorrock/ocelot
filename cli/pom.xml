@@ -260,7 +260,7 @@
                                 <configuration>
                                     <artifacts>
                                         <artifact>
-                                            <file>${project.build.directory}/ocelot-cli-${appVersion}.dmg</file>
+                                            <file>${project.build.directory}/Manorrock Ocelot-${appVersion}.dmg</file>
                                             <type>dmg</type>
                                         </artifact>
                                     </artifacts>
@@ -288,7 +288,7 @@
                                         <argument>--app-version</argument>
                                         <argument>${appVersion}</argument>
                                         <argument>-n</argument>
-                                        <argument>ocelot-cli</argument>
+                                        <argument>Manorrock Ocelot</argument>
                                         <argument>-p</argument>
                                         <argument>${project.build.directory}/jars</argument>
                                         <argument>-m</argument>
