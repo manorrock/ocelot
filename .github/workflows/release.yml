@@ -45,6 +45,7 @@ jobs:
     - name: Deploy Linux .tar.gz file
       run: |
         cd cli-linux
+        export MAVEN_OPTS='--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED'
         mvn -B -DskipTests=true -DskipITs=true -ntp -P release deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -70,6 +71,7 @@ jobs:
     - name: Deploy macOS .dmg file
       run: |
         cd cli-macos
+        export MAVEN_OPTS='--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED'
         mvn -B -DskipTests=true -DskipITs=true -ntp -P release deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -95,6 +97,7 @@ jobs:
     - name: Deploy Windows .msi file
       run: |
         cd cli-windows
+        set MAVEN_OPTS="--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED"
         mvn -B -DskipTests=true -DskipITs=true -ntp -P release deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
