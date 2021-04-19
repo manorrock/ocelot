@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Java 11
+    - name: Set up Java 16
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 16
         server-id: ossrh
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
@@ -40,11 +40,9 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create JLink image
-      run: mvn -B -ntp -P image install
-    - name: Create .tar.gz distribution
-      run: mvn -B -ntp -P distribution install
-    - name: Deploy .tar.gz distribution
+    - name: Create Linux .tar.gz file
+      run: mvn -B -ntp -P linux install
+    - name: Deploy Linux .tar.gz file
       run: |
         cd cli-linux
         mvn -B -DskipTests=true -DskipITs=true -ntp -P release deploy
@@ -56,10 +54,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Java 11
+    - name: Set up Java 16
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 16
         server-id: ossrh
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
@@ -67,11 +65,9 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create JLink image
-      run: mvn -B -ntp -P image install
-    - name: Create .tar.gz distribution
-      run: mvn -B -ntp -P distribution install
-    - name: Deploy .tar.gz distribution
+    - name: Create macOS .dmg file
+      run: mvn -B -ntp -P macos install
+    - name: Deploy macOS .dmg file
       run: |
         cd cli-macos
         mvn -B -DskipTests=true -DskipITs=true -ntp -P release deploy
@@ -83,10 +79,10 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Java 11
+    - name: Set up Java 16
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 16
         server-id: ossrh
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
@@ -94,11 +90,9 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create JLink image
-      run: mvn -B -ntp -P image install
-    - name: Create .zip distribution
-      run: mvn -B -ntp -P distribution install
-    - name: Deploy .zip distribution
+    - name: Create Windows .msi file
+      run: mvn -B -ntp -P windows install
+    - name: Deploy Windows .msi file
       run: |
         cd cli-windows
         mvn -B -DskipTests=true -DskipITs=true -ntp -P release deploy
