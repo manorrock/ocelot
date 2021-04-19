@@ -4,42 +4,6 @@ on:
     branches:
       - 'master'
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Java 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - name: Build project
-      run: mvn -B -ntp install
-    - name: Login to Docker Hub
-      uses: azure/docker-login@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}      
-    - name: Build amd64 image
-      run: |
-        cd webapp
-        docker build -f Dockerfile.amd64 -t manorrock/ocelot:amd64-latest .
-        docker push manorrock/ocelot:amd64-latest
-    - name: Build arm32v6 image
-      run: |
-        cd webapp
-        docker build -f Dockerfile.arm32v6 -t manorrock/ocelot:arm32v6-latest .
-        docker push manorrock/ocelot:arm32v6-latest
-    - name: Push Docker manifest
-      run: |
-        export DOCKER_CLI_EXPERIMENTAL=enabled
-        docker manifest create manorrock/ocelot:latest \
-          manorrock/ocelot:amd64-latest \
-          manorrock/ocelot:arm32v6-latest
-        docker manifest annotate manorrock/ocelot:latest \
-          manorrock/ocelot:amd64-latest --os linux --arch amd64
-        docker manifest annotate manorrock/ocelot:latest \
-          manorrock/ocelot:arm32v6-latest --os linux --arch arm
-        docker manifest push manorrock/ocelot:latest
   linux:
     runs-on: ubuntu-latest
     steps:
