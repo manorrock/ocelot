@@ -368,7 +368,7 @@
                                 <configuration>
                                     <artifacts>
                                         <artifact>
-                                            <file>${project.build.directory}/ocelot-cli-${appVersion}.msi</file>
+                                            <file>${project.build.directory}/Manorrock Ocelot-${appVersion}.msi</file>
                                             <type>msi</type>
                                         </artifact>
                                     </artifacts>
@@ -396,7 +396,7 @@
                                         <argument>--app-version</argument>
                                         <argument>${appVersion}</argument>
                                         <argument>-n</argument>
-                                        <argument>ocelot-cli</argument>
+                                        <argument>Manorrock Ocelot</argument>
                                         <argument>-p</argument>
                                         <argument>${project.build.directory}/jars</argument>
                                         <argument>-m</argument>
