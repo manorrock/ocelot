@@ -87,13 +87,18 @@ public class BuildCommand implements Callable<Integer> {
      */
     @Option(names = "--timeout-unit", description = "The timeout unit (e.g. seconds, minutes, hours, days).")
     private String timeoutUnit = "seconds";
-    
+
     /**
      * Stores the verbose flag.
      */
     @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
     private boolean verbose = false;
-    
+
+    /**
+     * Stores the working directory.
+     */
+    private File workingDirectory;
+
     /**
      * Deploy the given image locally using Docker.
      *
@@ -112,6 +117,9 @@ public class BuildCommand implements Callable<Integer> {
         processArguments.add("-f");
         processArguments.add("Dockerfile");
         processArguments.add(".");
+        if (workingDirectory != null) {
+            builder.directory(workingDirectory);
+        }
         Process process = builder.command(processArguments).inheritIO().start();
         process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
         return process.exitValue();
@@ -129,7 +137,10 @@ public class BuildCommand implements Callable<Integer> {
         } else if (file == null) {
             imageName = new File("").getCanonicalFile().getName();
         } else {
-            imageName = file.get(0);
+            imageName = new File(file.get(0)).getCanonicalFile().getName();
+        }
+        if (file != null) {
+            workingDirectory = new File(file.get(0));
         }
         if (runtime != null) {
             switch (runtime.toLowerCase()) {
@@ -144,7 +155,7 @@ public class BuildCommand implements Callable<Integer> {
 
     /**
      * Normalize the image name.
-     * 
+     *
      * @param imageName the image name.
      * @return the normalized image name.
      */
@@ -161,10 +172,10 @@ public class BuildCommand implements Callable<Integer> {
         }
         return imageName;
     }
-    
+
     /**
      * Determine which build images to use.
-     * 
+     *
      * @return list of build images to use.
      */
     private List<String> determineBuildImages() {
