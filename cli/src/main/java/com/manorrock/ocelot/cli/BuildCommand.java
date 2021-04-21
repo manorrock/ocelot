@@ -31,10 +31,8 @@ package com.manorrock.ocelot.cli;
 
 import java.io.File;
 import static java.lang.System.Logger.Level.INFO;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -105,24 +103,12 @@ public class BuildCommand implements Callable<Integer> {
      * @param imageName the image name.
      */
     private int buildOnDocker(String imageName) throws Exception {
-        if (verbose) {
-            LOGGER.log(INFO, "Building " + imageName);
-        }
-        ProcessBuilder builder = new ProcessBuilder();
-        ArrayList<String> processArguments = new ArrayList<>();
-        processArguments.add("docker");
-        processArguments.add("build");
-        processArguments.add("-t");
-        processArguments.add(imageName);
-        processArguments.add("-f");
-        processArguments.add("Dockerfile");
-        processArguments.add(".");
-        if (workingDirectory != null) {
-            builder.directory(workingDirectory);
-        }
-        Process process = builder.command(processArguments).inheritIO().start();
-        process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
-        return process.exitValue();
+        DockerBuilder docker = new DockerBuilder();
+        docker.setImageName(imageName);
+        docker.setTimeout(timeout);
+        docker.setTimeoutUnit(timeoutUnit);
+        docker.setWorkingDirectory(workingDirectory);
+        return docker.execute();
     }
 
     /**
@@ -171,16 +157,5 @@ public class BuildCommand implements Callable<Integer> {
             LOGGER.log(INFO, "Normalized image name to: " + imageName);
         }
         return imageName;
-    }
-
-    /**
-     * Determine which build images to use.
-     *
-     * @return list of build images to use.
-     */
-    private List<String> determineBuildImages() {
-        ArrayList<String> result = new ArrayList<>();
-        result.add("dotjava11");
-        return result;
     }
 }

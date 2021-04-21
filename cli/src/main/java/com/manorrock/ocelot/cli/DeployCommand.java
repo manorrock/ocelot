@@ -31,7 +31,6 @@ package com.manorrock.ocelot.cli;
 
 import java.io.File;
 import java.lang.System.Logger;
-import static java.lang.System.Logger.Level.INFO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,9 +43,9 @@ import picocli.CommandLine.Parameters;
  * The deploy command.
  *
  * <p>
- * This command will deploy the image to a target runtime. It will try to
- * use sensible defaults. If it fails to determine the defaults it will suggest
- * a course of action.
+ * This command will deploy the image to a target runtime. It will try to use
+ * sensible defaults. If it fails to determine the defaults it will suggest a
+ * course of action.
  * </p>
  *
  * @author Manfred Riem (mriem@manorrock.com)
@@ -89,12 +88,17 @@ public class DeployCommand implements Callable<Integer> {
      */
     @Option(names = "--timeout-unit", description = "The timeout unit (e.g. seconds, minutes, hours, days).")
     private String timeoutUnit = "seconds";
-    
+
     /**
      * Stores the verbose flag.
      */
     @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
     private boolean verbose = false;
+
+    /**
+     * Stores the working directory.
+     */
+    private File workingDirectory;
 
     /**
      * Call the command.
@@ -108,7 +112,10 @@ public class DeployCommand implements Callable<Integer> {
         } else if (file == null) {
             imageName = new File("").getCanonicalFile().getName();
         } else {
-            imageName = file.get(0);
+            imageName = new File(file.get(0)).getCanonicalFile().getName();
+        }
+        if (file != null) {
+            workingDirectory = new File(file.get(0));
         }
         if (runtime != null) {
             switch (runtime.toLowerCase()) {
@@ -127,9 +134,18 @@ public class DeployCommand implements Callable<Integer> {
      * @param imageName the image name.
      */
     private int deployOnDocker(String imageName) throws Exception {
-        if (verbose) {
-            LOGGER.log(INFO, "Deploying " + imageName);
+
+        DockerBuilder docker = new DockerBuilder();
+        docker.setImageName(imageName);
+        docker.setTimeout(timeout);
+        docker.setTimeoutUnit(timeoutUnit);
+        if (workingDirectory != null) {
+            docker.setWorkingDirectory(workingDirectory);
         }
+        docker.execute();
+
+        System.out.println("[Deployer] Starting deployment of '" + imageName + "' image");
+
         ProcessBuilder builder = new ProcessBuilder();
         ArrayList<String> processArguments = new ArrayList<>();
         processArguments.add("docker");
@@ -139,8 +155,16 @@ public class DeployCommand implements Callable<Integer> {
         processArguments.add("-p");
         processArguments.add("8080:8080");
         processArguments.add(imageName);
-        Process process = builder.command(processArguments).inheritIO().start();
+        if (verbose) {
+            builder = builder.inheritIO();
+        }
+        Process process = builder.command(processArguments).start();
         process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
+        
+        if (process.exitValue() == 0) {
+            System.out.println("[Deployer] Application is available on http://localhost:8080");
+        }
+        
         return process.exitValue();
     }
 }
