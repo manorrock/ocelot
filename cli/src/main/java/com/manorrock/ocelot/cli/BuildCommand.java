@@ -71,7 +71,7 @@ public class BuildCommand implements Callable<Integer> {
     /**
      * Stores the runtime.
      */
-    @Option(names = "--runtime", description = "The build runtime (e.g. Docker, AzureCR).", defaultValue = "docker")
+    @Option(names = "--runtime", description = "The build runtime (e.g. Docker, ACR).", defaultValue = "docker")
     private String runtime;
 
     /**
@@ -98,7 +98,7 @@ public class BuildCommand implements Callable<Integer> {
     private File workingDirectory;
 
     /**
-     * Deploy the given image locally using Docker.
+     * Build the given image locally using Docker.
      *
      * @param imageName the image name.
      */
@@ -108,7 +108,21 @@ public class BuildCommand implements Callable<Integer> {
         docker.setTimeout(timeout);
         docker.setTimeoutUnit(timeoutUnit);
         docker.setWorkingDirectory(workingDirectory);
-        return docker.execute();
+        return docker.build();
+    }
+    
+    /**
+     * Build the image on Azure Container Registry.
+     * 
+     * @param imageName the image name.
+     */
+    private int buildOnAzure(String imageName) throws Exception {
+        AzureCliBuilder builder = new AzureCliBuilder();
+        builder.setImageName(imageName);
+        builder.setTimeout(timeout);
+        builder.setTimeoutUnit(timeoutUnit);
+        builder.setWorkingDirectory(workingDirectory);
+        return builder.build();
     }
 
     /**
@@ -132,6 +146,8 @@ public class BuildCommand implements Callable<Integer> {
             switch (runtime.toLowerCase()) {
                 case "docker":
                     return buildOnDocker(normalizeImageName(imageName));
+                case "acr" :
+                    return buildOnAzure(normalizeImageName(imageName));
                 default:
                     break;
             }

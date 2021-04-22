@@ -138,7 +138,7 @@ public class DockerBuilder {
      * @return the exit value.
      * @throws Exception when a serious error occurs.
      */
-    public int execute() throws Exception {
+    public int build() throws Exception {
         System.out.println("[Builder] Building '" + imageName + "' image");
         ProcessBuilder builder = new ProcessBuilder();
         ArrayList<String> processArguments = new ArrayList<>();

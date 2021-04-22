@@ -78,6 +78,12 @@ public class DeployCommand implements Callable<Integer> {
     private String runtime;
 
     /**
+     * Stores the skip build.
+     */
+    @Option(names = {"--skip-build"}, description = "Skip the build")
+    private boolean skipBuild = false;
+
+    /**
      * Stores the timeout.
      */
     @Option(names = "--timeout", description = "The timeout before aborting the deploy.")
@@ -121,6 +127,8 @@ public class DeployCommand implements Callable<Integer> {
             switch (runtime.toLowerCase()) {
                 case "docker":
                     return deployOnDocker(imageName);
+                case "aci":
+                    return deployOnAzure(imageName);
                 default:
                     break;
             }
@@ -142,7 +150,7 @@ public class DeployCommand implements Callable<Integer> {
         if (workingDirectory != null) {
             docker.setWorkingDirectory(workingDirectory);
         }
-        docker.execute();
+        docker.build();
 
         System.out.println("[Deployer] Starting deployment of '" + imageName + "' image");
 
@@ -160,11 +168,42 @@ public class DeployCommand implements Callable<Integer> {
         }
         Process process = builder.command(processArguments).start();
         process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
-        
+
         if (process.exitValue() == 0) {
             System.out.println("[Deployer] Application is available on http://localhost:8080");
         }
-        
+
         return process.exitValue();
+    }
+
+    /**
+     * Deploy the image to Azure.
+     *
+     * @param imageName the image name.
+     * @return the exit value.
+     */
+    private int deployOnAzure(String imageName) throws Exception {
+        int exitValue = 0;
+
+        if (!skipBuild) {
+            AzureCliBuilder builder = new AzureCliBuilder();
+            builder.setImageName(imageName);
+            builder.setTimeout(timeout);
+            builder.setTimeoutUnit(timeoutUnit);
+            if (workingDirectory != null) {
+                builder.setWorkingDirectory(workingDirectory);
+            }
+            exitValue = builder.build();
+        }
+
+        if (exitValue == 0) {
+            AzureCliDeployer deployer = new AzureCliDeployer();
+            deployer.setImageName(imageName);
+            deployer.setTimeout(timeout);
+            deployer.setTimeoutUnit(timeoutUnit);
+            exitValue = deployer.deploy();
+        }
+        
+        return exitValue;
     }
 }
