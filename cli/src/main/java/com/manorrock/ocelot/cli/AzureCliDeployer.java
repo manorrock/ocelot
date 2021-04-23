@@ -56,6 +56,11 @@ public class AzureCliDeployer {
      * Store the image name.
      */
     private String imageName;
+    
+    /**
+     * Stores the resource group name.
+     */
+    private String rgName;
 
     /**
      * Stores the timeout.
@@ -79,7 +84,7 @@ public class AzureCliDeployer {
         processArguments.add("container");
         processArguments.add("create");
         processArguments.add("--resource-group");
-        processArguments.add(imageName);
+        processArguments.add(rgName);
         processArguments.add("--name");
         processArguments.add(imageName);
         processArguments.add("--image");
@@ -102,7 +107,7 @@ public class AzureCliDeployer {
             processArguments.add("container");
             processArguments.add("show");
             processArguments.add("--resource-group");
-            processArguments.add(imageName);
+            processArguments.add(rgName);
             processArguments.add("--name");
             processArguments.add(imageName);
             processArguments.add("--query");
@@ -156,6 +161,7 @@ public class AzureCliDeployer {
         exitValue = acrGetPassword();
         if (exitValue == 0) {
             acrUsername = imageName;
+            rgName = imageName;
             exitValue = aciDeploy();
         } else {
             System.out.println("[Deployer] Unable to deploy '" + imageName + "' image");

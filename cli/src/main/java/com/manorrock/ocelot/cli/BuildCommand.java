@@ -30,7 +30,6 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
-import static java.lang.System.Logger.Level.INFO;
 import java.util.List;
 import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
@@ -51,16 +50,17 @@ import picocli.CommandLine.Parameters;
 public class BuildCommand implements Callable<Integer> {
 
     /**
-     * Stores the logger.
-     */
-    private static final System.Logger LOGGER = System.getLogger(BuildCommand.class.getName());
-
-    /**
      * Stores the file/directory to build.
      */
     @Parameters(index = "0",
             description = "The file/directory to build. When not supplied the current directory will be used.")
     private List<String> file;
+
+    /**
+     * Stores the application name.
+     */
+    @Option(names = "--name", description = "The (application) name")
+    private String name;
 
     /**
      * Stores the image name.
@@ -99,10 +99,8 @@ public class BuildCommand implements Callable<Integer> {
 
     /**
      * Build the given image locally using Docker.
-     *
-     * @param imageName the image name.
      */
-    private int buildOnDocker(String imageName) throws Exception {
+    private int buildOnDocker() throws Exception {
         DockerBuilder docker = new DockerBuilder();
         docker.setImageName(imageName);
         docker.setTimeout(timeout);
@@ -110,13 +108,11 @@ public class BuildCommand implements Callable<Integer> {
         docker.setWorkingDirectory(workingDirectory);
         return docker.build();
     }
-    
+
     /**
      * Build the image on Azure Container Registry.
-     * 
-     * @param imageName the image name.
      */
-    private int buildOnAzure(String imageName) throws Exception {
+    private int buildOnAzure() throws Exception {
         AzureCliBuilder builder = new AzureCliBuilder();
         builder.setImageName(imageName);
         builder.setTimeout(timeout);
@@ -133,21 +129,17 @@ public class BuildCommand implements Callable<Integer> {
      */
     @Override
     public Integer call() throws Exception {
-        if (imageName != null) {
-        } else if (file == null) {
-            imageName = new File("").getCanonicalFile().getName();
-        } else {
-            imageName = new File(file.get(0)).getCanonicalFile().getName();
-        }
-        if (file != null) {
-            workingDirectory = new File(file.get(0));
-        }
+
+        determineName();
+        determineImageName();
+        determineWorkingDirectory();
+
         if (runtime != null) {
             switch (runtime.toLowerCase()) {
                 case "docker":
-                    return buildOnDocker(normalizeImageName(imageName));
-                case "acr" :
-                    return buildOnAzure(normalizeImageName(imageName));
+                    return buildOnDocker();
+                case "acr":
+                    return buildOnAzure();
                 default:
                     break;
             }
@@ -156,22 +148,43 @@ public class BuildCommand implements Callable<Integer> {
     }
 
     /**
-     * Normalize the image name.
-     *
-     * @param imageName the image name.
-     * @return the normalized image name.
+     * Determine the image name.
+     * 
+     * <p>
+     * If no image name was set we use the name and normalize it to construct
+     * the image name.
      */
-    private String normalizeImageName(String imageName) {
-        if (verbose) {
-            LOGGER.log(INFO, "Normalizing image name: " + imageName);
+    private void determineImageName() {
+        if (imageName == null) {
+            imageName = name;
+            if (imageName.contains(".")) {
+                imageName = imageName.substring(0, imageName.indexOf("."));
+            }
+            imageName = imageName.toLowerCase();
         }
-        if (imageName.contains(".")) {
-            imageName = imageName.substring(0, imageName.indexOf("."));
+    }
+
+    /**
+     * Determine the name.
+     * 
+     * @throws Exception when a serious error occurs.
+     */
+    private void determineName() throws Exception {
+        if (name == null && file == null) {
+            name = new File("").getCanonicalFile().getName();
+        } else if (name == null) {
+            name = new File(file.get(0)).getCanonicalFile().getName();
         }
-        imageName = imageName.toLowerCase();
-        if (verbose) {
-            LOGGER.log(INFO, "Normalized image name to: " + imageName);
+    }
+
+    /**
+     * Determine the working directory.
+     */
+    private void determineWorkingDirectory() {
+        if (file != null) {
+            workingDirectory = new File(file.get(0));
+        } else {
+            workingDirectory = new File("");
         }
-        return imageName;
     }
 }
