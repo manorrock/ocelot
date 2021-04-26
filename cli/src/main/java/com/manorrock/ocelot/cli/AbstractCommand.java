@@ -29,31 +29,49 @@
  */
 package com.manorrock.ocelot.cli;
 
-import java.util.concurrent.Callable;
-import picocli.CommandLine.Command;
+import java.io.File;
+import java.util.List;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 /**
- * The log command.
- * 
- * <p>
- *  This command will initiate log streaming to your terminal.
- * 
+ * The abstract command for common command functionality.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Command(name = "log", mixinStandardHelpOptions = true)
-public class LogCommand extends AbstractCommand implements Callable<Integer> {
+public class AbstractCommand {
+
+    /**
+     * Stores the file/directory to execute the command against.
+     */
+    @Parameters(index = "0",
+            description = "The file/directory to build. When not supplied the"
+            + "current directory will be used.")
+    protected List<String> file;
     
     /**
-     * Call the command.
+     * Stores the application name.
+     */
+    @Option(names = "--name", description = "The application name")
+    protected String name;
+
+    /**
+     * Stores the verbose flag.
+     */
+    @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
+    protected boolean verbose = false;
+
+    /**
+     * Determine the name.
      *
-     * @return 0 when completed successfully.
      * @throws Exception when a serious error occurs.
      */
-    @Override
-    public Integer call() throws Exception {
-        determineName();
-        DockerLogger logger = new DockerLogger();
-        logger.setApplicationName(name);
-        return logger.log();
+    protected void determineName() throws Exception {
+        if (name == null && file == null) {
+            name = new File("").getCanonicalFile().getName();
+        } else if (name == null) {
+            name = new File(file.get(0)).getCanonicalFile().getName();
+        }
+        System.out.println("[Common] Determined application name to be '" + name + "'");
     }
 }

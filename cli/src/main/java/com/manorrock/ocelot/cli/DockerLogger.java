@@ -29,31 +29,40 @@
  */
 package com.manorrock.ocelot.cli;
 
-import java.util.concurrent.Callable;
-import picocli.CommandLine.Command;
+import java.util.ArrayList;
 
 /**
- * The log command.
- * 
- * <p>
- *  This command will initiate log streaming to your terminal.
+ * The Docker logger.
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Command(name = "log", mixinStandardHelpOptions = true)
-public class LogCommand extends AbstractCommand implements Callable<Integer> {
+public class DockerLogger {
     
     /**
-     * Call the command.
+     * Stores the application name.
+     */
+    private String applicationName;
+
+    /**
+     * Execute the logger.
      *
-     * @return 0 when completed successfully.
+     * @return the exit value.
      * @throws Exception when a serious error occurs.
      */
-    @Override
-    public Integer call() throws Exception {
-        determineName();
-        DockerLogger logger = new DockerLogger();
-        logger.setApplicationName(name);
-        return logger.log();
+    public int log() throws Exception {
+        System.out.println("[Logger] Attaching to Docker container '" + applicationName + "' to stream logs");
+        ProcessBuilder builder = new ProcessBuilder();
+        ArrayList<String> processArguments = new ArrayList<>();
+        processArguments.add("docker");
+        processArguments.add("logs");
+        processArguments.add("-f");
+        processArguments.add(applicationName);
+        Process process = builder.command(processArguments).inheritIO().start();
+        process.waitFor();
+        return process.exitValue();
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
     }
 }

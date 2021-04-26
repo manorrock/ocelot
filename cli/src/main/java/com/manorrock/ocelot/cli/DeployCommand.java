@@ -51,19 +51,12 @@ import picocli.CommandLine.Parameters;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Command(name = "deploy", mixinStandardHelpOptions = true)
-public class DeployCommand implements Callable<Integer> {
+public class DeployCommand extends AbstractCommand implements Callable<Integer> {
 
     /**
      * Stores the logger.
      */
     private static final Logger LOGGER = System.getLogger(DeployCommand.class.getName());
-
-    /**
-     * Stores the file/directory to deploy.
-     */
-    @Parameters(index = "0",
-            description = "The file/directory to deploy. When not supplied the current directory will be used.")
-    private List<String> file;
 
     /**
      * Stores the image name.
@@ -96,12 +89,6 @@ public class DeployCommand implements Callable<Integer> {
     private String timeoutUnit = "seconds";
 
     /**
-     * Stores the verbose flag.
-     */
-    @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
-    private boolean verbose = false;
-
-    /**
      * Stores the working directory.
      */
     private File workingDirectory;
@@ -123,6 +110,7 @@ public class DeployCommand implements Callable<Integer> {
         if (file != null) {
             workingDirectory = new File(file.get(0));
         }
+        determineName();
         if (runtime != null) {
             switch (runtime.toLowerCase()) {
                 case "docker":
@@ -161,6 +149,8 @@ public class DeployCommand implements Callable<Integer> {
         processArguments.add("docker");
         processArguments.add("run");
         processArguments.add("--rm");
+        processArguments.add("--name");
+        processArguments.add(name);
         processArguments.add("-d");
         processArguments.add("-p");
         processArguments.add("8080:8080");

@@ -30,11 +30,9 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
-import java.util.List;
 import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
 
 /**
  * The build command.
@@ -47,21 +45,7 @@ import picocli.CommandLine.Parameters;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Command(name = "build", mixinStandardHelpOptions = true)
-public class BuildCommand implements Callable<Integer> {
-
-    /**
-     * Stores the file/directory to build.
-     */
-    @Parameters(index = "0",
-            description = "The file/directory to build. When not supplied the"
-            + "current directory will be used.")
-    private List<String> file;
-
-    /**
-     * Stores the application name.
-     */
-    @Option(names = "--name", description = "The application name")
-    private String name;
+public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
     /**
      * Stores the image name.
@@ -90,12 +74,6 @@ public class BuildCommand implements Callable<Integer> {
     @Option(names = "--timeout-unit",
             description = "The timeout unit (e.g. seconds, minutes, hours, days).")
     private String timeoutUnit = "seconds";
-
-    /**
-     * Stores the verbose flag.
-     */
-    @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
-    private boolean verbose = false;
 
     /**
      * Stores the working directory.
@@ -170,20 +148,6 @@ public class BuildCommand implements Callable<Integer> {
             imageName = imageName.toLowerCase();
         }
         System.out.println("[Builder] Determined image name to be '" + imageName + "'");
-    }
-
-    /**
-     * Determine the name.
-     *
-     * @throws Exception when a serious error occurs.
-     */
-    private void determineName() throws Exception {
-        if (name == null && file == null) {
-            name = new File("").getCanonicalFile().getName();
-        } else if (name == null) {
-            name = new File(file.get(0)).getCanonicalFile().getName();
-        }
-        System.out.println("[Builder] Determined application name to be '" + name + "'");
     }
 
     /**
