@@ -53,13 +53,14 @@ public class BuildCommand implements Callable<Integer> {
      * Stores the file/directory to build.
      */
     @Parameters(index = "0",
-            description = "The file/directory to build. When not supplied the current directory will be used.")
+            description = "The file/directory to build. When not supplied the"
+            + "current directory will be used.")
     private List<String> file;
 
     /**
      * Stores the application name.
      */
-    @Option(names = "--name", description = "The (application) name")
+    @Option(names = "--name", description = "The application name")
     private String name;
 
     /**
@@ -71,19 +72,23 @@ public class BuildCommand implements Callable<Integer> {
     /**
      * Stores the runtime.
      */
-    @Option(names = "--runtime", description = "The build runtime (e.g. Docker, ACR).", defaultValue = "docker")
+    @Option(names = "--runtime",
+            description = "The build runtime (e.g. Docker, ACR).",
+            defaultValue = "docker")
     private String runtime;
 
     /**
      * Stores the timeout.
      */
-    @Option(names = "--timeout", description = "The timeout before aborting the deploy.")
+    @Option(names = "--timeout",
+            description = "The timeout before aborting the deploy.")
     private long timeout = 600;
 
     /**
      * Stores the timeout unit.
      */
-    @Option(names = "--timeout-unit", description = "The timeout unit (e.g. seconds, minutes, hours, days).")
+    @Option(names = "--timeout-unit",
+            description = "The timeout unit (e.g. seconds, minutes, hours, days).")
     private String timeoutUnit = "seconds";
 
     /**
@@ -101,12 +106,13 @@ public class BuildCommand implements Callable<Integer> {
      * Build the given image locally using Docker.
      */
     private int buildOnDocker() throws Exception {
-        DockerBuilder docker = new DockerBuilder();
-        docker.setImageName(imageName);
-        docker.setTimeout(timeout);
-        docker.setTimeoutUnit(timeoutUnit);
-        docker.setWorkingDirectory(workingDirectory);
-        return docker.build();
+        DockerBuilder builder = new DockerBuilder();
+        builder.setImageName(imageName);
+        builder.setTimeout(timeout);
+        builder.setTimeoutUnit(timeoutUnit);
+        builder.setWorkingDirectory(workingDirectory);
+        builder.setVerbose(verbose);
+        return builder.build();
     }
 
     /**
@@ -118,6 +124,7 @@ public class BuildCommand implements Callable<Integer> {
         builder.setTimeout(timeout);
         builder.setTimeoutUnit(timeoutUnit);
         builder.setWorkingDirectory(workingDirectory);
+        builder.setVerbose(verbose);
         return builder.build();
     }
 
@@ -149,7 +156,7 @@ public class BuildCommand implements Callable<Integer> {
 
     /**
      * Determine the image name.
-     * 
+     *
      * <p>
      * If no image name was set we use the name and normalize it to construct
      * the image name.
@@ -162,11 +169,12 @@ public class BuildCommand implements Callable<Integer> {
             }
             imageName = imageName.toLowerCase();
         }
+        System.out.println("[Builder] Determined image name to be '" + imageName + "'");
     }
 
     /**
      * Determine the name.
-     * 
+     *
      * @throws Exception when a serious error occurs.
      */
     private void determineName() throws Exception {
@@ -175,6 +183,7 @@ public class BuildCommand implements Callable<Integer> {
         } else if (name == null) {
             name = new File(file.get(0)).getCanonicalFile().getName();
         }
+        System.out.println("[Builder] Determined application name to be '" + name + "'");
     }
 
     /**
@@ -186,5 +195,6 @@ public class BuildCommand implements Callable<Integer> {
         } else {
             workingDirectory = new File("");
         }
+        System.out.println("[Builder] Determined working directory to be '" + workingDirectory + "'");
     }
 }

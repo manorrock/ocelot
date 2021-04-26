@@ -35,34 +35,67 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The Docker builder.
- * 
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
 public class DockerBuilder {
-    
+
     /**
      * Stores the image name.
      */
     private String imageName;
-    
+
     /**
      * Stores working directory.
      */
     private File workingDirectory;
-    
+
     /**
      * Stores the timeout.
      */
     private long timeout;
-    
+
     /**
      * Stores the timeout unit (e.g. seconds, minutes, hours, days).
      */
     private String timeoutUnit;
+    
+    /**
+     * Stores the verbose flag.
+     */
+    private boolean verbose;
+
+    /**
+     * Execute the build.
+     *
+     * @return the exit value.
+     * @throws Exception when a serious error occurs.
+     */
+    public int build() throws Exception {
+        System.out.println("[Builder] Building '" + imageName + "' image");
+        ProcessBuilder builder = new ProcessBuilder();
+        ArrayList<String> processArguments = new ArrayList<>();
+        processArguments.add("/usr/local/bin/docker");
+        processArguments.add("build");
+        processArguments.add("-t");
+        processArguments.add(imageName);
+        processArguments.add("-f");
+        processArguments.add("Dockerfile");
+        processArguments.add(".");
+        if (verbose) {
+            builder = builder.inheritIO();
+        }
+        if (workingDirectory != null) {
+            builder = builder.directory(workingDirectory);
+        }
+        Process process = builder.command(processArguments).start();
+        process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
+        return process.exitValue();
+    }
 
     /**
      * Get the image name.
-     * 
+     *
      * @return the image name.
      */
     public String getImageName() {
@@ -71,7 +104,7 @@ public class DockerBuilder {
 
     /**
      * Get the timeout.
-     * 
+     *
      * @return the timeout.
      */
     public long getTimeout() {
@@ -80,7 +113,7 @@ public class DockerBuilder {
 
     /**
      * Get the timeout unit.
-     * 
+     *
      * @return the timeout unit.
      */
     public String getTimeoutUnit() {
@@ -89,7 +122,7 @@ public class DockerBuilder {
 
     /**
      * Get the working directory.
-     * 
+     *
      * @return the working directory.
      */
     public File getWorkingDirectory() {
@@ -98,7 +131,7 @@ public class DockerBuilder {
 
     /**
      * Set the image name.
-     * 
+     *
      * @param imageName the image name.
      */
     public void setImageName(String imageName) {
@@ -107,7 +140,7 @@ public class DockerBuilder {
 
     /**
      * Set the timeout.
-     * 
+     *
      * @param timeout the timeout.
      */
     public void setTimeout(long timeout) {
@@ -116,7 +149,7 @@ public class DockerBuilder {
 
     /**
      * Set the timeout unit.
-     * 
+     *
      * @param timeoutUnit the timeout unit.
      */
     public void setTimeoutUnit(String timeoutUnit) {
@@ -125,35 +158,19 @@ public class DockerBuilder {
 
     /**
      * Set the working directory.
-     * 
+     *
      * @param workingDirectory the working directory.
      */
     public void setWorkingDirectory(File workingDirectory) {
         this.workingDirectory = workingDirectory;
     }
-    
+
     /**
-     * Execute the build.
+     * Set the verbose flag.
      * 
-     * @return the exit value.
-     * @throws Exception when a serious error occurs.
+     * @param verbose the verbose flag.
      */
-    public int build() throws Exception {
-        System.out.println("[Builder] Building '" + imageName + "' image");
-        ProcessBuilder builder = new ProcessBuilder();
-        ArrayList<String> processArguments = new ArrayList<>();
-        processArguments.add("docker");
-        processArguments.add("build");
-        processArguments.add("-t");
-        processArguments.add(imageName);
-        processArguments.add("-f");
-        processArguments.add("Dockerfile");
-        processArguments.add(".");
-        if (workingDirectory != null) {
-            builder.directory(workingDirectory);
-        }
-        Process process = builder.command(processArguments).inheritIO().start();
-        process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
-        return process.exitValue();
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 }

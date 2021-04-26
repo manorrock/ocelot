@@ -69,6 +69,11 @@ public class AzureCliBuilder {
      * Stores the timeout unit.
      */
     private String timeoutUnit;
+    
+    /**
+     * Stores the verbose flag.
+     */
+    private boolean verbose;
 
     /**
      * Stores the working directory.
@@ -92,10 +97,13 @@ public class AzureCliBuilder {
         processArguments.add("--registry");
         processArguments.add(acrName);
         processArguments.add(".");
-        if (workingDirectory != null) {
-            builder.directory(workingDirectory);
+        if (verbose) {
+            builder = builder.inheritIO();
         }
-        Process process = builder.command(processArguments).inheritIO().start();
+        if (workingDirectory != null) {
+            builder = builder.directory(workingDirectory);
+        }
+        Process process = builder.command(processArguments).start();
         process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
         return process.exitValue();
     }
@@ -109,7 +117,7 @@ public class AzureCliBuilder {
         System.out.println("[Builder] Checking if ACR '" + acrName + "' exists");
         ProcessBuilder builder = new ProcessBuilder();
         ArrayList<String> processArguments = new ArrayList<>();
-        processArguments.add("az");
+        processArguments.add("/usr/local/bin/az");
         processArguments.add("acr");
         processArguments.add("show");
         processArguments.add("--name");
@@ -274,6 +282,15 @@ public class AzureCliBuilder {
      */
     public void setTimeoutUnit(String timeoutUnit) {
         this.timeoutUnit = timeoutUnit;
+    }
+
+    /**
+     * Set the verbose flag.
+     * 
+     * @param verbose the verbose flag.
+     */
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 
     /**
