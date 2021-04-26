@@ -117,7 +117,7 @@ public class AzureCliBuilder {
         System.out.println("[Builder] Checking if ACR '" + acrName + "' exists");
         ProcessBuilder builder = new ProcessBuilder();
         ArrayList<String> processArguments = new ArrayList<>();
-        processArguments.add("/usr/local/bin/az");
+        processArguments.add("az");
         processArguments.add("acr");
         processArguments.add("show");
         processArguments.add("--name");

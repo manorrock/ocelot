@@ -75,7 +75,7 @@ public class DockerBuilder {
         System.out.println("[Builder] Building '" + imageName + "' image");
         ProcessBuilder builder = new ProcessBuilder();
         ArrayList<String> processArguments = new ArrayList<>();
-        processArguments.add("/usr/local/bin/docker");
+        processArguments.add("docker");
         processArguments.add("build");
         processArguments.add("-t");
         processArguments.add(imageName);
