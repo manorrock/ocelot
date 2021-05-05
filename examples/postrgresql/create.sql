@@ -1,2 +1,0 @@
-CREATE TABLE countries(
-)
