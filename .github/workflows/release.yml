@@ -90,8 +90,6 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create Windows .msi file
-      run: mvn -B -ntp -P windows install
     - name: Deploy Windows .msi file
       run: |
         cd cli-windows
