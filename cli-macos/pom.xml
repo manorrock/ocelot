@@ -19,22 +19,14 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
+                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>copy</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <artifactItems>
-                                <artifact>
-                                    <groupId>com.manorrock.ocelot</groupId>
-                                    <artifactId>ocelot-cli</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>dmg</type>
-                                </artifact>
-                            </artifactItems>
                             <overWriteReleases>true</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.directory}/jars</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -45,6 +37,21 @@
                 <version>3.2.0</version>
                 <executions>
                     <execution>
+                        <id>regex-property</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>appVersion</name>
+                            <value>${project.version}</value>
+                            <regex>-SNAPSHOT+$</regex>
+                            <replacement></replacement>
+                            <failIfNoMatch>false</failIfNoMatch>
+                            <elseValue>${project.version}</elseValue>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>attach-artifacts</id>
                         <phase>package</phase>
                         <goals>
@@ -53,14 +60,46 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${build.directory}/ocelot-cli-${project.version}.dmg</file>
+                                    <file>${build.directory}/Manorrock Ocelot-${appVersion}.dmg</file>
                                     <type>dmg</type>
                                 </artifact>
                             </artifacts>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>        
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>jpackage</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/jpackage</executable>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                            <arguments>
+                                <argument>--type</argument>
+                                <argument>dmg</argument>
+                                <argument>--app-version</argument>
+                                <argument>${appVersion}</argument>
+                                <argument>-n</argument>
+                                <argument>Manorrock Ocelot</argument>
+                                <argument>-p</argument>
+                                <argument>${project.build.directory}/jars</argument>
+                                <argument>-m</argument>
+                                <argument>com.manorrock.ocelot.cli/com.manorrock.ocelot.cli.Cli</argument>
+                                <argument>--add-launcher</argument>
+                                <argument>mo=${basedir}/src/main/macos/mo.properties</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -68,8 +107,6 @@
             <groupId>com.manorrock.ocelot</groupId>
             <artifactId>ocelot-cli</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
-            <type>dmg</type>
         </dependency>
     </dependencies>
 </project>

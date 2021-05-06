@@ -66,8 +66,6 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create macOS .dmg file
-      run: mvn -B -ntp -P macos install
     - name: Deploy macOS .dmg file
       run: |
         cd cli-macos
