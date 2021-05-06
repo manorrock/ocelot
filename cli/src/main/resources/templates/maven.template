@@ -1,7 +1,0 @@
-FROM maven AS {0}
-COPY . /mnt
-WORKDIR /mnt
-RUN cd /mnt && \
-    mvn install && \
-    export FINALNAME='target/'$(mvn exec:exec -Dexec.executable='echo' -Dexec.args='${project.build.finalName}' -q)'.jar' && \
-    cp $FINALNAME application.jar
