@@ -17,8 +17,6 @@ jobs:
         server-password: MAVEN_PASSWORD
     - name: Build project
       run: mvn -B -ntp install
-    - name: Create Linux .tar.gz file
-      run: mvn -B -ntp -P linux install
     - name: Deploy Linux .tar.gz file
       run: |
         cd cli-linux
