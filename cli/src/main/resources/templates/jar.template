@@ -1,4 +1,0 @@
-FROM adoptopenjdk/openjdk11:slim
-COPY --from={0} /mnt/application.jar /mnt/application.jar
-WORKDIR /mnt
-CMD ["java", "-jar", "application.jar"]
