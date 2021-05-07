@@ -13,7 +13,7 @@ applications.
 
 ## Installing
 
-Pick the OS below to download the installation bundle
+Pick your OS below to download the installation bundle
 
 | Linux | macOS | Windows |
 |-------|-------|---------|
@@ -36,7 +36,7 @@ Once you have used the MSI installer to install the application add `C:\Program 
 
 ## Getting started
 
-After installing the CLI and making sure it is added to your PATH you can get started by executing the following command line in the top-level directory of your project
+After installing you can get started by executing the following command line in the top-level directory of your project
 
 ```shell
   mo deploy
