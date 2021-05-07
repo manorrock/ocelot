@@ -11,6 +11,29 @@ applications.
 1. Docker
 1. Azure CLI
 
+## Installing
+
+Pick the OS below to download the installation bundle
+
+| Linux | macOS | Windows |
+|-------|-------|---------|
+|<a href="https://repo1.maven.org/maven2/com/manorrock/ocelot/ocelot-cli-linux/"><img src="doc/images/logo-linux.png" height="75" width="75"></a>       |<a href="https://repo1.maven.org/maven2/com/manorrock/ocelot/ocelot-cli-macos/"><img src="doc/images/logo-apple.svg" height="75" width="75"></a>       |<a href="https://repo1.maven.org/maven2/com/manorrock/ocelot/ocelot-cli-windows/"><img src="doc/images/logo-windows.png" height="75" width="75"></a>|
+| <a href="https://repo1.maven.org/maven2/com/manorrock/ocelot/ocelot-cli-linux/">Download</a> | <a href="https://repo1.maven.org/maven2/com/manorrock/ocelot/ocelot-cli-macos/">Download</a> | <a href="https://repo1.maven.org/maven2/com/manorrock/ocelot/ocelot-cli-windows/">Download</a> |
+
+Note the links above will always take you to the top-level download location. Please click on the latest version available to get to the installation bundle.
+
+### Linux
+
+Once you have downloaded the `.tar.gz` bundle extract it to a directory of your choice and add the `bin` directory to ypur `PATH`.
+
+### macOS
+
+Once you have used the DMG installer to install the application into the `/Applications` directory add `/Applications/Manorrock Ocelot.app/Contents/MacOS` to your `PATH`.
+
+### Windows
+
+Once you have used the MSI installer to install the application add `C:\Program Files\Manorrock Ocelot` to your `PATH`
+
 ## Getting started
 
 After installing the CLI and making sure it is added to your PATH you can get started by executing the following command line in the top-level directory of your project
@@ -19,7 +42,7 @@ After installing the CLI and making sure it is added to your PATH you can get st
   mo deploy
 ```
 
-This will deploy your application using Docker. 
+This will deploy your application using Docker.
 
 ## Deploying on Azure Container Instances
 
