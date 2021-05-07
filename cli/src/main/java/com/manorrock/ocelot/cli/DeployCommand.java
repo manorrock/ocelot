@@ -30,14 +30,11 @@
 package com.manorrock.ocelot.cli;
 
 import java.io.File;
-import java.lang.System.Logger;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
 
 /**
  * The deploy command.
@@ -52,11 +49,6 @@ import picocli.CommandLine.Parameters;
  */
 @Command(name = "deploy", mixinStandardHelpOptions = true)
 public class DeployCommand extends AbstractCommand implements Callable<Integer> {
-
-    /**
-     * Stores the logger.
-     */
-    private static final Logger LOGGER = System.getLogger(DeployCommand.class.getName());
 
     /**
      * Stores the image name.
