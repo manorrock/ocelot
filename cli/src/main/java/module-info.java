@@ -28,6 +28,11 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * The CLI module.
+ * 
+ * @author Manfred Riem (mriem@manorrock.com)
+ */
 module com.manorrock.ocelot.cli {
     
     exports com.manorrock.ocelot.cli;

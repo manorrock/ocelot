@@ -29,49 +29,20 @@
  */
 package com.manorrock.ocelot.cli;
 
-import java.io.File;
-import java.util.List;
-import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
-
 /**
- * The abstract command for common command functionality.
- *
+ * The source types for deployment.
+ * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class AbstractCommand {
-
-    /**
-     * Stores the filename of the file/directory to execute the command against.
+enum DeploySourceType {
+    
+    /*
+     * The deployment source is a JAR file.
      */
-    @Parameters(index = "0",
-            description = "The file/directory to build. When not supplied the"
-            + "current directory will be used.")
-    protected List<String> filename;
+    JAR,
     
     /**
-     * Stores the application name.
+     * Unknown deployment source.
      */
-    @Option(names = "--name", description = "The application name")
-    protected String name;
-
-    /**
-     * Stores the verbose flag.
-     */
-    @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
-    protected boolean verbose = false;
-
-    /**
-     * Determine the name.
-     *
-     * @throws Exception when a serious error occurs.
-     */
-    protected void determineName() throws Exception {
-        if (name == null && filename == null) {
-            name = new File("").getCanonicalFile().getName();
-        } else if (name == null) {
-            name = new File(filename.get(0)).getCanonicalFile().getName();
-        }
-        System.out.println("[Common] Determined application name to be '" + name + "'");
-    }
+    UNKNOWN
 }

@@ -49,10 +49,15 @@ import picocli.CommandLine.Command;
 public class Cli implements Callable<Integer> {
     
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         return 0;
     }
     
+    /**
+     * Main method.
+     * 
+     * @param arguments the arguments.
+     */
     public static void main(String[] arguments) {
         System.exit(new CommandLine(new Cli()).execute(arguments));
     }

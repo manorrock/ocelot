@@ -29,49 +29,15 @@
  */
 package com.manorrock.ocelot.cli;
 
-import java.io.File;
-import java.util.List;
-import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
-
 /**
- * The abstract command for common command functionality.
- *
+ * The deployment destination target.
+ * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class AbstractCommand {
-
-    /**
-     * Stores the filename of the file/directory to execute the command against.
-     */
-    @Parameters(index = "0",
-            description = "The file/directory to build. When not supplied the"
-            + "current directory will be used.")
-    protected List<String> filename;
+enum DeployDestTarget {
     
-    /**
-     * Stores the application name.
+    /*
+     * The deployment target is Docker.
      */
-    @Option(names = "--name", description = "The application name")
-    protected String name;
-
-    /**
-     * Stores the verbose flag.
-     */
-    @Option(names = {"-v", "--verbose"}, description = "Output more verbose.")
-    protected boolean verbose = false;
-
-    /**
-     * Determine the name.
-     *
-     * @throws Exception when a serious error occurs.
-     */
-    protected void determineName() throws Exception {
-        if (name == null && filename == null) {
-            name = new File("").getCanonicalFile().getName();
-        } else if (name == null) {
-            name = new File(filename.get(0)).getCanonicalFile().getName();
-        }
-        System.out.println("[Common] Determined application name to be '" + name + "'");
-    }
+    DOCKER
 }
