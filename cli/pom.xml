@@ -25,6 +25,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
+                    <forceCreation>true</forceCreation>
                     <archive>
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -59,47 +60,15 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.6.1</version>
+            <version>4.5.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
     <profiles>
         <profile>
-            <id>macos-arm64</id>
+            <id>linux</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.8.1</version>
-                        <configuration>
-                            <annotationProcessorPaths>
-                                <path>
-                                    <groupId>info.picocli</groupId>
-                                    <artifactId>picocli-codegen</artifactId>
-                                    <version>4.6.1</version>
-                                </path>
-                            </annotationProcessorPaths>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.graalvm.nativeimage</groupId>
-                        <artifactId>native-image-maven-plugin</artifactId>
-                        <version>21.1.0</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>native-image</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skip>false</skip>
-                            <imageName>mo</imageName>
-                            <buildArgs>--no-fallback</buildArgs>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
