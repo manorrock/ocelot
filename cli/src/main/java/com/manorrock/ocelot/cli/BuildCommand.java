@@ -54,12 +54,12 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
     private String imageName;
 
     /**
-     * Stores the runtime.
+     * Stores the builder.
      */
-    @Option(names = "--runtime",
-            description = "The build runtime (e.g. Docker, ACR).",
+    @Option(names = "--builder",
+            description = "The image builder (e.g. Docker, ACR).",
             defaultValue = "docker")
-    private String runtime;
+    private String builder;
 
     /**
      * Stores the timeout.
@@ -81,29 +81,29 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
     private File workingDirectory;
 
     /**
-     * Build the given image locally using Docker.
+     * Build the image using your local Docker.
      */
     private int buildOnDocker() throws Exception {
-        DockerBuilder builder = new DockerBuilder();
-        builder.setImageName(imageName);
-        builder.setTimeout(timeout);
-        builder.setTimeoutUnit(timeoutUnit);
-        builder.setWorkingDirectory(workingDirectory);
-        builder.setVerbose(verbose);
-        return builder.build();
+        DockerBuilder docker = new DockerBuilder();
+        docker.setImageName(imageName);
+        docker.setTimeout(timeout);
+        docker.setTimeoutUnit(timeoutUnit);
+        docker.setWorkingDirectory(workingDirectory);
+        docker.setVerbose(verbose);
+        return docker.build();
     }
 
     /**
-     * Build the image on Azure Container Registry.
+     * Build the image using Azure Container Registry.
      */
     private int buildOnAzure() throws Exception {
-        AzureCliBuilder builder = new AzureCliBuilder();
-        builder.setImageName(imageName);
-        builder.setTimeout(timeout);
-        builder.setTimeoutUnit(timeoutUnit);
-        builder.setWorkingDirectory(workingDirectory);
-        builder.setVerbose(verbose);
-        return builder.build();
+        AzureCliBuilder acr = new AzureCliBuilder();
+        acr.setImageName(imageName);
+        acr.setTimeout(timeout);
+        acr.setTimeoutUnit(timeoutUnit);
+        acr.setWorkingDirectory(workingDirectory);
+        acr.setVerbose(verbose);
+        return acr.build();
     }
 
     /**
@@ -119,8 +119,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         determineImageName();
         determineWorkingDirectory();
 
-        if (runtime != null) {
-            switch (runtime.toLowerCase()) {
+        if (builder != null) {
+            switch (builder.toLowerCase()) {
                 case "docker":
                     return buildOnDocker();
                 case "acr":
