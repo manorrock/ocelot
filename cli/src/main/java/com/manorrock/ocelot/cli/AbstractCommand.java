@@ -42,12 +42,12 @@ import picocli.CommandLine.Parameters;
 public class AbstractCommand {
 
     /**
-     * Stores the filename of the file/directory to execute the command against.
+     * Stores the file/directory to execute the command against.
      */
     @Parameters(index = "0",
             description = "The file/directory to build. When not supplied the"
             + "current directory will be used.")
-    protected List<String> filename;
+    protected List<String> file;
     
     /**
      * Stores the application name.
@@ -67,10 +67,10 @@ public class AbstractCommand {
      * @throws Exception when a serious error occurs.
      */
     protected void determineName() throws Exception {
-        if (name == null && filename == null) {
+        if (name == null && file == null) {
             name = new File("").getCanonicalFile().getName();
         } else if (name == null) {
-            name = new File(filename.get(0)).getCanonicalFile().getName();
+            name = new File(file.get(0)).getCanonicalFile().getName();
         }
         System.out.println("[Common] Determined application name to be '" + name + "'");
     }

@@ -154,8 +154,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
      * Determine the working directory.
      */
     private void determineWorkingDirectory() {
-        if (filename != null) {
-            workingDirectory = new File(filename.get(0));
+        if (file != null) {
+            workingDirectory = new File(file.get(0));
         } else {
             workingDirectory = new File("");
         }

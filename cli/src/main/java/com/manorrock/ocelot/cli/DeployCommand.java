@@ -29,17 +29,12 @@
  */
 package com.manorrock.ocelot.cli;
 
-import static com.manorrock.ocelot.cli.DeployDestTarget.DOCKER;
-import static com.manorrock.ocelot.cli.DeployDestType.CONTAINER;
-import static com.manorrock.ocelot.cli.DeploySourceType.JAR;
-import static com.manorrock.ocelot.cli.DeploySourceType.UNKNOWN;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
 
 /**
  * The deploy command.
@@ -53,35 +48,7 @@ import picocli.CommandLine.Parameters;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Command(name = "deploy", mixinStandardHelpOptions = true)
-public class DeployCommand implements Callable<Integer> {
-
-    /**
-     * Stores the destination target.
-     */
-    private DeployDestTarget destTarget = DOCKER;
-
-    /**
-     * Stores the destination type.
-     */
-    private DeployDestType destType = CONTAINER;
-
-    /**
-     * Stores the filename.
-     */
-    private String filename;
-
-    /**
-     * Stores the filenames of the files/directories to execute the command
-     * against.
-     */
-    @Parameters(description = "The file/directory to deploy. When not supplied the"
-            + "current directory will be used.")
-    private List<String> filenames;
-
-    /**
-     * Stores the source directory.
-     */
-    private File sourceDirectory;
+public class DeployCommand extends AbstractCommand implements Callable<Integer> {
 
     /**
      * Stores the image name.
@@ -90,25 +57,16 @@ public class DeployCommand implements Callable<Integer> {
     private String imageName;
 
     /**
-     * Stores the name.
+     * Stores the runtime.
      */
-    private String name;
+    @Option(names = "--runtime", description = "The execution runtime (e.g. Docker, Kubernetes).", defaultValue = "docker")
+    private String runtime;
 
     /**
-     * Stores the source file (if any).
-     */
-    private File sourceFile;
-
-    /**
-     * Stores the source type.
-     */
-    private DeploySourceType sourceType = UNKNOWN;
-
-    /**
-     * Stores the skip build flag.
+     * Stores the skip build.
      */
     @Option(names = {"--skip-build"}, description = "Skip the build")
-    private boolean skipBuild = true;
+    private boolean skipBuild = false;
 
     /**
      * Stores the timeout.
@@ -123,208 +81,113 @@ public class DeployCommand implements Callable<Integer> {
     private String timeoutUnit = "seconds";
 
     /**
-     * Execute the deploy.
+     * Stores the working directory.
+     */
+    private File workingDirectory;
+
+    /**
+     * Call the command.
      *
-     * @return the status code.
+     * @return 0 when completed successfully.
+     * @throws Exception when a serious error occurs.
      */
     @Override
-    public Integer call() {
-        int result = 0;
-
-        normalizeFilenames();
-
-        for (String currentFilename : filenames) {
-            filename = currentFilename;
-            result = determineSourceType();
-
-            if (result == 0) {
-                switch (sourceType) {
-                    case JAR:
-                        result = deployJar();
-                        break;
-                }
-            }
-
-            if (result != 0) {
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Deploy the JAR file.
-     *
-     * The following steps are taken when deploying a JAR file.
-     *
-     * <ol>
-     * <li>Determine the source file</li>
-     * <li>Determine the source directory</li>
-     * <li>Determine the destination type</li>
-     * </ol>
-     *
-     * @return the result.
-     */
-    private int deployJar() {
-        int result;
-
-        determineSourceFile();
-        determineSourceDirectory();
-
-        result = determineDestType();
-        if (result == 0) {
-            result = determineDestTarget();
-        }
-        switch (destTarget) {
-            case DOCKER:
-                result = deployJarOnDocker();
-        }
-
-        return result;
-    }
-
-    /**
-     * Deploy JAR on Docker.
-     */
-    private int deployJarOnDocker() {
-
-        determineName();
-        determineImageName();
-
-        DockerDeployer deployer = new DockerDeployer();
-        deployer.setName(name);
-        deployer.setImageName(imageName);
-        deployer.setTimeout(timeout);
-        deployer.setTimeoutUnit(timeoutUnit);
-
-        return deployer.deploy();
-    }
-
-    /**
-     * Determine the destination target.
-     *
-     * @return the status code.
-     */
-    private int determineDestTarget() {
-        System.out.println("[Deployer] Destination target is DOCKER");
-        return 0;
-    }
-
-    /**
-     * Determine the destination type.
-     *
-     * <p>
-     * If no destination type is passed then we return CONTAINER as the
-     * destination type.
-     * </p>
-     *
-     * @return the status code.
-     */
-    private int determineDestType() {
-        System.out.println("[Deployer] Destination type is CONTAINER");
-        return 0;
-    }
-
-    /**
-     * Determine the image name.
-     */
-    private void determineImageName() {
-        if (imageName == null) {
-            imageName = name;
-        }
-        System.out.println("[Deployer] Image name is " + imageName);
-    }
-
-    /**
-     * Determine the name.
-     *
-     * <p>
-     * If the (application) name is not specified it is take from the filename
-     * by stripping off the extension if it exists. Otherwise the filename is
-     * taken as-is.
-     * </p>
-     */
-    private void determineName() {
-        if (name == null && filename.contains(".")) {
-            name = filename.substring(0, filename.indexOf("."));
-        } else if (name == null) {
-            name = filename;
-        }
-        System.out.println("[Deployer] Name is " + name);
-    }
-
-    /**
-     * Determine the source directory.
-     *
-     * <p>
-     * If there is a source file the source directory will be the directory in
-     * which the source file resides.
-     * </p>
-     */
-    private void determineSourceDirectory() {
-        sourceDirectory = new File(filename);
-        if (!sourceDirectory.isDirectory()) {
-            sourceDirectory = sourceDirectory.getAbsoluteFile().getParentFile();
-        }
-        System.out.println("[Deployer] Source directory is " + sourceDirectory.getAbsolutePath());
-    }
-
-    /**
-     * Determine the source file.
-     *
-     * <p>
-     * If the command line arguments specified a directory to deploy then the
-     * source file will be null. Otherwise the source file will be the file
-     * passed in on the comand line.
-     * </p>
-     */
-    private void determineSourceFile() {
-        sourceFile = new File(filename);
-        if (sourceFile.isDirectory()) {
-            sourceFile = null;
+    public Integer call() throws Exception {
+        if (imageName != null) {
+        } else if (file == null) {
+            imageName = new File("").getCanonicalFile().getName();
         } else {
-            System.out.println("[Deployer] Source file is " + sourceFile.getAbsolutePath());
+            imageName = new File(file.get(0)).getCanonicalFile().getName();
         }
+        if (file != null) {
+            workingDirectory = new File(file.get(0));
+        }
+        determineName();
+        if (runtime != null) {
+            switch (runtime.toLowerCase()) {
+                case "docker":
+                    return deployOnDocker(imageName);
+                case "aci":
+                    return deployOnAzure(imageName);
+                default:
+                    break;
+            }
+        }
+        return 0;
     }
 
     /**
-     * Determine the source type.
+     * Deploy the given image locally using Docker.
      *
-     * <p>
-     * If the filename passed in is a file then we look at the extension to see
-     * if it ends with ".jar" and if it does we will return JAR as the source
-     * type.
-     * </p>
-     *
+     * @param imageName the image name.
      */
-    private int determineSourceType() {
-        int result = 0;
-        if (filename.toLowerCase().endsWith(".jar")) {
-            System.out.println("[Deployer] Source type is JAR");
-            sourceType = JAR;
+    private int deployOnDocker(String imageName) throws Exception {
+
+        if (!skipBuild) {
+            DockerBuilder docker = new DockerBuilder();
+            docker.setImageName(imageName);
+            docker.setTimeout(timeout);
+            docker.setTimeoutUnit(timeoutUnit);
+            if (workingDirectory != null) {
+                docker.setWorkingDirectory(workingDirectory);
+            }
+            docker.build();
         }
-        if (sourceType == UNKNOWN) {
-            System.out.println("[Deployer] Unable to determine source type");
-            result = 1;
+
+        System.out.println("[Deployer] Starting deployment of '" + imageName + "' image");
+
+        ProcessBuilder builder = new ProcessBuilder();
+        ArrayList<String> processArguments = new ArrayList<>();
+        processArguments.add("docker");
+        processArguments.add("run");
+        processArguments.add("--rm");
+        processArguments.add("--name");
+        processArguments.add(name);
+        processArguments.add("-d");
+        processArguments.add("-p");
+        processArguments.add("8080:8080");
+        processArguments.add(imageName);
+        if (verbose) {
+            builder = builder.inheritIO();
         }
-        return result;
+        Process process = builder.command(processArguments).start();
+        process.waitFor(timeout, TimeUnit.valueOf(timeoutUnit.toUpperCase()));
+
+        if (process.exitValue() == 0) {
+            System.out.println("[Deployer] Application is available on http://localhost:8080");
+        }
+
+        return process.exitValue();
     }
 
     /**
-     * Normalize the filenames.
+     * Deploy the image to Azure.
      *
-     * <p>
-     * If no filename was passed we are going to assume the user wants to deploy
-     * the current directory.
-     * </p>
+     * @param imageName the image name.
+     * @return the exit value.
      */
-    private void normalizeFilenames() {
-        if (filenames == null) {
-            System.out.println("[Deployer] No deployment file / directory found");
-            System.out.println("[Deployer] Defaulting to deploying the current directory");
-            filenames = new ArrayList<>();
-            filenames.add("");
+    private int deployOnAzure(String imageName) throws Exception {
+        int exitValue = 0;
+
+        if (!skipBuild) {
+            AzureCliBuilder builder = new AzureCliBuilder();
+            builder.setImageName(imageName);
+            builder.setTimeout(timeout);
+            builder.setTimeoutUnit(timeoutUnit);
+            if (workingDirectory != null) {
+                builder.setWorkingDirectory(workingDirectory);
+            }
+            exitValue = builder.build();
         }
+
+        if (exitValue == 0) {
+            AzureCliDeployer deployer = new AzureCliDeployer();
+            deployer.setImageName(imageName);
+            deployer.setTimeout(timeout);
+            deployer.setTimeoutUnit(timeoutUnit);
+            exitValue = deployer.deploy();
+        }
+
+        return exitValue;
     }
 }

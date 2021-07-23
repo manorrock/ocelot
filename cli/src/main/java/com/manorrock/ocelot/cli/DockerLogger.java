@@ -62,11 +62,6 @@ public class DockerLogger {
         return process.exitValue();
     }
 
-    /**
-     * Set the application name.
-     * 
-     * @param applicationName the application name.
-     */
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
