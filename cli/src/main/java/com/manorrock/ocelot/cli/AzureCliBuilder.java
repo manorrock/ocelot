@@ -32,6 +32,7 @@ package com.manorrock.ocelot.cli;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * The builder used to build images and push them to Azure Container Registry.
@@ -263,6 +264,9 @@ public class AzureCliBuilder {
      * @param imageName the imageName.
      */
     public void setImageName(String imageName) {
+        if (!Pattern.matches("^[a-zA-Z0-9]*$", imageName)) {
+            System.out.println("[Builder] Image name does not conform to ACR naming scheme");
+        }
         this.imageName = imageName;
     }
 
