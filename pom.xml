@@ -102,6 +102,7 @@
         </snapshotRepository>
     </distributionManagement>    
     <modules>
+	<module>azure</module>
         <module>cli</module>
     </modules>
     <profiles>
