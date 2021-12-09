@@ -33,31 +33,30 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import static java.lang.System.Logger.Level.WARNING;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * The Azure Resource Group deployer.
- * 
+ * The Azure Container Registry deployer.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class AzureResourceGroupDeployer implements Deployer {
-    
+public class AzureContainerRegistryDeployer implements Deployer {
+
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = System.getLogger(AzureResourceGroupDeployer.class.getName());
+    private static final Logger LOGGER = System.getLogger(AzureContainerRegistryDeployer.class.getName());
 
     /**
      * Stores the name of the resource group.
      */
     private String name;
-    
+
     /**
-     * Stores the location.
+     * Stores the resource group.
      */
-    private String location;
-    
+    private String resourceGroup;
+
     @Override
     public int deploy() {
         int exitValue = -1;
@@ -65,21 +64,24 @@ public class AzureResourceGroupDeployer implements Deployer {
             ProcessBuilder builder = new ProcessBuilder();
             ArrayList<String> processArguments = new ArrayList<>();
             processArguments.add("az");
-            processArguments.add("group");
+            processArguments.add("acr");
             processArguments.add("create");
             processArguments.add("--name");
             processArguments.add(name);
-            processArguments.add("--location");
-            processArguments.add(location);
+            processArguments.add("--resource-group");
+            processArguments.add(resourceGroup);
+            processArguments.add("--sku");
+            processArguments.add("Standard");
+            processArguments.add("--admin-enabled");
             Process process = builder.command(processArguments).inheritIO().start();
-            process.waitFor(600, SECONDS);        
-            exitValue =  process.exitValue();
+            process.waitFor(600, SECONDS);
+            exitValue = process.exitValue();
         } catch (IOException | InterruptedException e) {
             LOGGER.log(WARNING, "Unable to deploy resource group", e);
         }
         return exitValue;
     }
-    
+
     @Override
     public int undeploy() {
         int exitValue = -1;
@@ -87,13 +89,13 @@ public class AzureResourceGroupDeployer implements Deployer {
             ProcessBuilder builder = new ProcessBuilder();
             ArrayList<String> processArguments = new ArrayList<>();
             processArguments.add("az");
-            processArguments.add("group");
+            processArguments.add("acr");
             processArguments.add("delete");
             processArguments.add("--name");
             processArguments.add(name);
             Process process = builder.command(processArguments).inheritIO().start();
-            process.waitFor(600, SECONDS);        
-            exitValue =  process.exitValue();
+            process.waitFor(600, SECONDS);
+            exitValue = process.exitValue();
         } catch (IOException | InterruptedException e) {
             LOGGER.log(WARNING, "Unable to undeploy resource group", e);
         }
