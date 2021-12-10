@@ -36,26 +36,41 @@ import java.util.ArrayList;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * The Azure Resource Group deployer.
- * 
+ * The Azure Container Instance deployer.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class AzureResourceGroupDeployer implements Deployer {
-    
+public class AzureContainerInstanceDeployer implements Deployer {
+
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = System.getLogger(AzureResourceGroupDeployer.class.getName());
+    private static final Logger LOGGER = System.getLogger(AzureContainerInstanceDeployer.class.getName());
+    
+    /**
+     * Stores the image.
+     */
+    private String image;
 
     /**
-     * Stores the name of the resource group.
+     * Stores the name.
      */
     private String name;
     
     /**
-     * Stores the location.
+     * Stores the registry username.
      */
-    private String location;
+    private String registryUsername;
+    
+    /**
+     * Stores the registry password.
+     */
+    private String registryPassword;
+
+    /**
+     * Stores the resource group.
+     */
+    private String resourceGroup;
     
     @Override
     public int deploy() {
@@ -64,21 +79,30 @@ public class AzureResourceGroupDeployer implements Deployer {
             ProcessBuilder builder = new ProcessBuilder();
             ArrayList<String> processArguments = new ArrayList<>();
             processArguments.add("az");
-            processArguments.add("group");
+            processArguments.add("container");
             processArguments.add("create");
+            processArguments.add("--resource-group");
+            processArguments.add(resourceGroup);
             processArguments.add("--name");
             processArguments.add(name);
-            processArguments.add("--location");
-            processArguments.add(location);
+            processArguments.add("--image");
+            processArguments.add(image);
+            processArguments.add("--registry-username");
+            processArguments.add(registryUsername);
+            processArguments.add("--registry-password");
+            processArguments.add(registryPassword);
+            processArguments.add("--ip-address");
+            processArguments.add("Public");
+            processArguments.add("--ports");
+            processArguments.add("8080");
             Process process = builder.command(processArguments).inheritIO().start();
-            process.waitFor(600, SECONDS);        
-            exitValue =  process.exitValue();
+            process.waitFor(600, SECONDS);
         } catch (IOException | InterruptedException e) {
-            LOGGER.log(WARNING, "Unable to deploy resource group", e);
+            LOGGER.log(WARNING, "Unable to deploy the container instance", e);
         }
         return exitValue;
     }
-    
+
     @Override
     public int undeploy() {
         int exitValue = -1;
@@ -86,15 +110,15 @@ public class AzureResourceGroupDeployer implements Deployer {
             ProcessBuilder builder = new ProcessBuilder();
             ArrayList<String> processArguments = new ArrayList<>();
             processArguments.add("az");
-            processArguments.add("group");
+            processArguments.add("container");
             processArguments.add("delete");
             processArguments.add("--name");
             processArguments.add(name);
             Process process = builder.command(processArguments).inheritIO().start();
-            process.waitFor(600, SECONDS);        
-            exitValue =  process.exitValue();
+            process.waitFor(600, SECONDS);
+            exitValue = process.exitValue();
         } catch (IOException | InterruptedException e) {
-            LOGGER.log(WARNING, "Unable to undeploy resource group", e);
+            LOGGER.log(WARNING, "Unable to undeploy the container instance", e);
         }
         return exitValue;
     }
