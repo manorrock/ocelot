@@ -30,31 +30,24 @@
 package com.manorrock.ocelot.cli;
 
 import java.util.concurrent.Callable;
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 /**
- * The Ocelot CLI.
+ * The create command will create a specific resource.
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Command(name = "mo", mixinStandardHelpOptions = true, 
-        subcommands = {
-            CreateCommand.class,
-            BuildCommand.class,
-            DeployCommand.class,
-            LogCommand.class,
-            RunCommand.class
-        },
-        versionProvider = CliVersion.class)
-public class Cli implements Callable<Integer> {
+@Command(name = "create", mixinStandardHelpOptions = true)
+public class CreateCommand implements Callable<Integer> {
     
+    /**
+     * Call the command.
+     *
+     * @return 0 when completed successfully.
+     * @throws Exception when a serious error occurs.
+     */
     @Override
     public Integer call() throws Exception {
         return 0;
-    }
-    
-    public static void main(String[] arguments) {
-        System.exit(new CommandLine(new Cli()).execute(arguments));
     }
 }
