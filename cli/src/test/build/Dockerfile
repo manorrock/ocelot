@@ -1,1 +1,0 @@
-FROM adoptopenjdk:11
