@@ -180,13 +180,6 @@
         </snapshotRepository>
         
     </distributionManagement>
-      
-    
-    <modules>
-    	
-        <module>azure</module>
-    </modules>
-      
     <profiles>
         <profile>
                   
