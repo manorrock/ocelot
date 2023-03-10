@@ -185,9 +185,6 @@
     <modules>
     	
         <module>azure</module>
-          
-        <module>webapp</module>
-      
     </modules>
       
     <profiles>
