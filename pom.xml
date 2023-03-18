@@ -145,17 +145,11 @@
         </developer>
         
     </developers>
-      
     <distributionManagement>
-            
         <snapshotRepository>
-                  
             <id>ossrh</id>
-                  
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-              
         </snapshotRepository>
-        
     </distributionManagement>
     <profiles>
         <profile>
@@ -190,6 +184,12 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <modules>
+                <module>windows</module>
+            </modules>
         </profile>
     </profiles>
     <properties>
