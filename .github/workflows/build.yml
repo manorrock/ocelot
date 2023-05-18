@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - 'current'
+  pull_request:
+    branches:
+      - 'current'
 jobs:
   linux:
     runs-on: ubuntu-latest
