@@ -26,12 +26,22 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <!-- provided -->
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>${jakarta.version}</version>
+            <groupId>com.manorrock.ocelot</groupId>
+            <artifactId>ocelot-azure-keyvault</artifactId>
+            <version>${project.version}</version>
             <scope>provided</scope>
+            <type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>com.manorrock.ocelot</groupId>
+            <artifactId>ocelot-proxy</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+            <type>pom</type>
+        </dependency>
+        <!-- test -->
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
