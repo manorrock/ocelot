@@ -28,4 +28,4 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push to Docker Hub
-      run: mvn -B -DskipTests=true -DskipITs=true -ntp -P docker docker:build docker:push
+      run: mvn -B -DskipTests=true -DskipITs=true -ntp docker:build docker:push
