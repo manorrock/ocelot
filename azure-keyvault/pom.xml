@@ -117,6 +117,13 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>build</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>start</id>
                         <phase>pre-integration-test</phase>
                         <goals>
@@ -129,6 +136,13 @@
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>stop</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>push</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>push</goal>
                         </goals>
                     </execution>
                 </executions>
