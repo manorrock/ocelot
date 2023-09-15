@@ -40,7 +40,7 @@
     <modules>
         <module>azure-keyvault</module>
         <module>azure-tests</module>
-        <module>proxy</module>
+        <module>httpproxy</module>
         <module>script-simulator</module>
     </modules>
     <build>

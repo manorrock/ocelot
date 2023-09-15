@@ -6,9 +6,9 @@
         <artifactId>project</artifactId>
         <version>23.8.0-SNAPSHOT</version>
     </parent>
-    <artifactId>ocelot-proxy</artifactId>
+    <artifactId>ocelot-httpproxy</artifactId>
     <packaging>war</packaging>
-    <name>Manorrock Ocelot - Proxy</name>
+    <name>Manorrock Ocelot - HTTP Proxy</name>
     <properties>
         <!-- other -->
         <piranha.contextPath>ROOT</piranha.contextPath>
