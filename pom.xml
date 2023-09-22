@@ -42,6 +42,7 @@
         <module>azure-tests</module>
         <module>httpproxy</module>
         <module>script-simulator</module>
+        <module>cli</module>
     </modules>
     <build>
         <pluginManagement>
