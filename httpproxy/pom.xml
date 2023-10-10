@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.manorrock.ocelot</groupId>
         <artifactId>project</artifactId>
-        <version>23.8.0-SNAPSHOT</version>
+        <version>23.10.0</version>
     </parent>
     <artifactId>ocelot-httpproxy</artifactId>
     <packaging>war</packaging>
