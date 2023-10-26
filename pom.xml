@@ -119,11 +119,6 @@
                 
     
     <module>script-simulator</module>
-                
-    
-    <module>cli</module>
-              
-    
     <module>azure-storage</module>
           
     
