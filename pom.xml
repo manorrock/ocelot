@@ -44,6 +44,7 @@
                 
     
     <groovy.version>4.0.13</groovy.version>
+<<<<<<< Updated upstream
                 
     
     <piranha.version>23.8.0</piranha.version>
@@ -52,6 +53,10 @@
     <!-- other -->
                 
     
+=======
+    <piranha.version>23.10.0</piranha.version>
+    <!-- other -->
+>>>>>>> Stashed changes
     <java.version>17</java.version>
                 
     

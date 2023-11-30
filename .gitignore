@@ -4,3 +4,4 @@
 nbactions.xml
 nb-configuration.xml
 target/
+/azure-keyvault/nbproject/
