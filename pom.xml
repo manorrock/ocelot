@@ -104,20 +104,6 @@
                 
     
     <module>azure-keyvault</module>
-                
-    
-    <module>azure-tests</module>
-                
-    
-    <module>httpproxy</module>
-                
-    
-    <module>script-simulator</module>
-    <module>azure-storage</module>
-          
-    
-    <module>azure-appconfig</module>
-    <module>cli</module>
   </modules>
         
   
