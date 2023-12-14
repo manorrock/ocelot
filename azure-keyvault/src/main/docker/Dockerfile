@@ -1,4 +1,4 @@
-FROM ghcr.io/piranhacloud/webprofile:23.10.0
+FROM ghcr.io/piranhacloud/webprofile:23.8.0
 ADD target/ROOT.war /home/piranha
 ADD src/main/docker/startup.sh /home/piranha
 WORKDIR /home/piranha
