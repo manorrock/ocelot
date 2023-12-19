@@ -109,7 +109,7 @@
                     <images>
                         <image>
                             <alias>ocelot-azure-keyvault</alias>
-                            <name>manorrock/ocelot-azure-keyvault:latest</name>
+                            <name>ghcr.io/manorrock/ocelot-azure-keyvault:latest</name>
                             <build>
                                 <buildx>
                                     <platforms>
