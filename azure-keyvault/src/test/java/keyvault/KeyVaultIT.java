@@ -1,15 +1,13 @@
 package keyvault;
 
+import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -24,17 +22,9 @@ public class KeyVaultIT {
     public KeyVaultIT() {
     }
 
-    @BeforeAll
-    public static void setUpClass() {
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-    }
-
     @BeforeEach
     public void setUp() {
-        credential = new DefaultAzureCredentialBuilder().build();
+        credential = new BasicAuthenticationCredential("", "");
     }
 
     @AfterEach
@@ -42,16 +32,14 @@ public class KeyVaultIT {
     }
 
     @Test
-    @Disabled
     public void testGetSecret() {
-        String keyVaultUri = "https://localhost:8443/api";
+        String keyVaultUri = "https://localhost:8200/api/keyvault/mykeyvault";
 
         SecretClient keyClient = new SecretClientBuilder()
-                .disableChallengeResourceVerification()
                 .vaultUrl(keyVaultUri)
                 .credential(credential)
                 .buildClient();
         
-        assertEquals("secretValue", keyClient.getSecret("secretKey"));
+        assertEquals("secretValue", keyClient.getSecret("secretKey").getValue());
     }
 }
