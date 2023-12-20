@@ -92,6 +92,12 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <systemPropertyVariables>
+                        <javax.net.ssl.trustStore>${basedir}/src/test/certs/keystore</javax.net.ssl.trustStore>
+                        <javax.net.ssl.trustStorePassword>password</javax.net.ssl.trustStorePassword>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -122,12 +128,17 @@
                             </build>
                             <run> 
                                 <ports> 
-                                    <port>8080:8080</port>
-                                    <port>8443:8443</port>
+                                    <port>8100:8080</port>
+                                    <port>8200:8443</port>
                                 </ports>
+                                <volumes>
+                                    <bind>
+                                        <volume>${basedir}/src/test/certs:/home/piranha/certs</volume>
+                                    </bind>
+                                </volumes>
                                 <wait> 
                                     <http>
-                                        <url>http://localhost:8080/</url>
+                                        <url>http://localhost:8100/</url>
                                     </http>
                                     <time>20000</time>
                                 </wait>
