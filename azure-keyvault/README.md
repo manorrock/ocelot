@@ -32,3 +32,7 @@ can mount the certificate directory.
 ```
 
 Replace $PWD/certs with the local directory that contains the `keystore` file.
+
+## Official Azure Key Vault documentation
+
+See the [REST API](https://learn.microsoft.com/en-us/rest/api/keyvault/).
