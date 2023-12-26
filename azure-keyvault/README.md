@@ -21,6 +21,15 @@ Note if your browser complains about the HTTPS link above it means you browser
 does not trust its certificate and you will have to import it into your browser
 certificate store.
 
+## Generate your own certificate
+
+If you want to generate your own certificate you can use the command-line below:
+
+```
+  keytool -genkey -alias self-signed -keyalg RSA -keystore keystore \
+    -keysize 4096 -storepass password -dname "CN=localhost"
+```
+
 ## Mounting your own certificate directory
 
 If you want to supply your own certificate instead of the generated one you
