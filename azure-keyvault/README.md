@@ -33,6 +33,15 @@ can mount the certificate directory.
 
 Replace $PWD/certs with the local directory that contains the `keystore` file.
 
+## What is the Key Vault base URL?
+
+If the port used is `8200` and the name of the keyvault is 'mykeyvault' the 
+Key Vault base URL would be:
+
+```text
+  https://localhost:8200/api/mykeyvault
+```
+
 ## Supported operations
 
 1. [Get Secret](https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?view=rest-keyvault-secrets-7.4&tabs=HTTP)
