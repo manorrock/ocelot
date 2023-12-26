@@ -33,6 +33,10 @@ can mount the certificate directory.
 
 Replace $PWD/certs with the local directory that contains the `keystore` file.
 
+## Supported operations
+
+1. [Get Secret](https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?view=rest-keyvault-secrets-7.4&tabs=HTTP)
+
 ## Official Azure Key Vault documentation
 
 See the [REST API](https://learn.microsoft.com/en-us/rest/api/keyvault/).
