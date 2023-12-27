@@ -8,7 +8,7 @@ experience.
 To run the simulator use the command line below:
 
 ```
-  docker run --rm -it -p 8100:8080 -p 8200:8443 manorrock/ocelot-azure-keyvault
+  docker run --rm -it -p 8100:8080 -p 8200:8443 ghcr.io/manorrock/ocelot-azure-keyvault
 ```
 
 ## Validate the simulator is up and running
