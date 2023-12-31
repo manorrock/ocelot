@@ -143,8 +143,8 @@
                             </build>
                             <run> 
                                 <ports> 
-                                    <port>8100:8080</port>
-                                    <port>8200:8443</port>
+                                    <port>8100:8100</port>
+                                    <port>8200:8200</port>
                                 </ports>
                                 <volumes>
                                     <bind>
