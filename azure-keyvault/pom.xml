@@ -41,6 +41,18 @@
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
+            <artifactId>azure-json</artifactId>
+            <version>1.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-xml</artifactId>
+            <version>1.0.0-beta.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
             <scope>test</scope>
         </dependency>
@@ -93,6 +105,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <environmentVariables>
+                        <AZURE_LOG_LEVEL>verbose</AZURE_LOG_LEVEL>
+                    </environmentVariables>
                     <systemPropertyVariables>
                         <javax.net.ssl.trustStore>${basedir}/src/test/certs/keystore</javax.net.ssl.trustStore>
                         <javax.net.ssl.trustStorePassword>password</javax.net.ssl.trustStorePassword>

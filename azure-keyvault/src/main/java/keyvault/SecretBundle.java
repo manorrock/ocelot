@@ -5,40 +5,25 @@ package keyvault;
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class KeyVaultSecret {
-    
+public class SecretBundle {
+   
     /**
-     * Stores the id.
+     * Stores the attributes.
      */
-    private String id;
-
+    private SecretAttributes attributes;
+    
     /**
      * Stores the value.
      */
     private String value;
-
-    /**
-     * Constructor.
-     */
-    public KeyVaultSecret() {
-    }
     
     /**
-     * Constructor.
+     * Get the attributes.
      * 
-     * @param value the secret value.
+     * @return the attributes.
      */
-    public KeyVaultSecret(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Get the id.
-     * 
-     * @return the id.
-     */
-    public String getId() {
-        return id;
+    public SecretAttributes getAttributes() {
+        return attributes;
     }
 
     /**
@@ -49,14 +34,14 @@ public class KeyVaultSecret {
     public String getValue() {
         return value;
     }
-
+    
     /**
-     * Set the id.
+     * Set the attributes.
      * 
-     * @param id the id.
+     * @param attributes the attributes.
      */
-    public void setId(String id) {
-        this.id = id;
+    public void setAttributes(SecretAttributes attributes) {
+        this.attributes = attributes;
     }
 
     /**
