@@ -35,6 +35,8 @@ If you want to generate your own certificate you can use the command-line below:
 If you want to supply your own certificate instead of the generated one you
 can mount the certificate directory.
 
+For example:
+
 ```bash
   docker run --rm -it -p 8100:8100 -p 8200:8200 \
     -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-keyvault
@@ -42,18 +44,32 @@ can mount the certificate directory.
 
 Replace $PWD/certs with the local directory that contains the `keystore` file.
 
-## What is the Key Vault base URL?
+## What is the Key Vault URL?
 
 If the port used is `8200` and the name of the keyvault is 'mykeyvault' the 
-Key Vault base URL would be:
+Key Vault URL would be:
 
 ```text
   https://localhost:8200/api/mykeyvault
 ```
 
+Note if you change the port number from `8200` to something else you will need
+to also pass the BASE_URL environment variable on the command-line as the 
+simulator needs to know the outside Key Vault base URL to properly generate
+ids, links and what not.
+
+For example:
+
+```bash
+  docker run --rm -it -p 7100:8100 -p 7200:8200 \
+    -e BASE_URL=https://localhost:7200 \
+    -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-keyvault
+```
+
 ## Supported operations
 
 1. [Get Secret](https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?view=rest-keyvault-secrets-7.4&tabs=HTTP)
+1. [Set Secret](https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/set-secret/set-secret?view=rest-keyvault-secrets-7.4&tabs=HTTP)
 
 ## Official Azure Key Vault documentation
 
