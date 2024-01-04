@@ -11,6 +11,11 @@ public class SecretBundle {
      * Stores the attributes.
      */
     private SecretAttributes attributes;
+
+    /**
+     *
+     */
+    private String id;
     
     /**
      * Stores the value.
@@ -24,6 +29,15 @@ public class SecretBundle {
      */
     public SecretAttributes getAttributes() {
         return attributes;
+    }
+
+    /**
+     * Get the id.
+     * 
+     * @return the id.
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -42,6 +56,15 @@ public class SecretBundle {
      */
     public void setAttributes(SecretAttributes attributes) {
         this.attributes = attributes;
+    }
+
+    /**
+     * Set the id.
+     * 
+     * @param id the id.
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
