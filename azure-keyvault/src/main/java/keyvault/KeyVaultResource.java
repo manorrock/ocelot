@@ -9,7 +9,6 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.WebApplicationException;
-import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +44,28 @@ public class KeyVaultResource {
     public SecretBundle getSecret(
             @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName) {
+        return getSecretWithVersion(keyVault, secretName, null);
+    }
+
+    /**
+     * Get the secret.
+     *
+     * <p>
+     * For more information, see
+     * https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?tabs=HTTP
+     * </p>
+     *
+     * @param keyVault the key vault.
+     * @param secretName the secret name.
+     * @param secretVersion the secret version.
+     * @return the secret value.
+     */
+    @Path("{name}/secrets/{secretName}/{secretVersion}")
+    @GET
+    public SecretBundle getSecretWithVersion(
+            @PathParam("name") String keyVault,
+            @PathParam("secretName") String secretName,
+            @PathParam("secretVersion") String secretVersion) {
         SecretBundle secret = null;
         Map<String, SecretBundle> secretsMap = secrets.get(keyVault);
         if (secretsMap != null) {
@@ -82,6 +103,10 @@ public class KeyVaultResource {
         } else {
             throw new WebApplicationException(500);
         }
+        
+        if (secret.getId() == null) {
+            secret.setId(getBaseUrl() + "/keyvault/" + keyVault + "/secrets/" + secretName + "/1");
+        }
 
         Map<String, SecretBundle> secretsMap = secrets.get(keyVault);
         if (secretsMap == null) {
@@ -91,5 +116,18 @@ public class KeyVaultResource {
 
         secretsMap.put(secretName, secret);
         return secret;
+    }
+
+    /**
+     * Get the base URL.
+     * 
+     * @return the base URL.
+     */
+    private String getBaseUrl() {
+        String baseUrl = System.getenv("BASE_URL");
+        if (baseUrl == null) {
+            baseUrl = "https://localhost:8200";
+        }
+        return baseUrl;
     }
 }

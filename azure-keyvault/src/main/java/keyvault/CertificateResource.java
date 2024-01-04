@@ -1,8 +1,8 @@
 package keyvault;
 
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +14,15 @@ import java.nio.file.Files;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Path("certificate")
+@Singleton
 public class CertificateResource {
 
+    /**
+     * Constructor.
+     */
+    public CertificateResource() {
+    }
+    
     /**
      * Download the certificate
      * 
