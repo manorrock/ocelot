@@ -1,504 +1,241 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
-        
-  
-  <modelVersion>4.0.0</modelVersion>
-        
-  
-  <groupId>com.manorrock.ocelot</groupId>
-        
-  
-  <artifactId>project</artifactId>
-        
-  
-  <version>23.8.0-SNAPSHOT</version>
-        
-  
-  <packaging>pom</packaging>
-        
-  
-  <name>Manorrock Ocelot - Project</name>
-        
-  
-  <description>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.manorrock.ocelot</groupId>
+    <artifactId>project</artifactId>
+    <version>23.8.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Manorrock Ocelot - Project</name>
+    <description>
         Manorrock Ocelot delivers you with Cloud native tooling.
     </description>
-        
-  
-  <url>https://github.com/manorrock/ocelot</url>
-        
-  
-  <properties>
-                
-    
-    <!-- dependencies -->
-                
-    
-    <azure-sdk-bom.version>1.2.11</azure-sdk-bom.version>
-                
-    
-    <jakarta.version>10.0.0</jakarta.version>
-                
-    
-    <junit.version>5.10.0</junit.version>
-                
-    
-    <groovy.version>4.0.13</groovy.version>
-    <piranha.version>23.10.0</piranha.version>
-    <!-- other -->
-    <java.version>17</java.version>
-                
-    
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                
-    
-    <!-- plugins -->
-                
-    
-    <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
-                
-    
-    <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-                
-    
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-                
-    
-    <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
-                
-    
-    <maven-failsafe-plugin.version>3.0.0</maven-failsafe-plugin.version>
-                
-    
-    <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-                
-    
-    <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
-                
-    
-    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
-            
-  
-  </properties>
-        
-  
-  <licenses>
-                
-    
-    <license>
-                        
-      
-      <name>Manorrock License</name>
-                        
-      
-      <url>https://github.com/manorrock/ocelot/blob/master/LICENSE</url>
-                    
-    
-    </license>
-            
-  
-  </licenses>
-        
-  
-  <modules>
-                
-    
-    <module>azure-keyvault</module>
-  </modules>
-        
-  
-  <build>
-                
-    
-    <pluginManagement>
-                        
-      
-      <plugins>
-                                
-        
-        <plugin>
-                                        
-          
-          <groupId>org.apache.maven.plugins</groupId>
-                                        
-          
-          <artifactId>maven-compiler-plugin</artifactId>
-                                        
-          
-          <version>${maven-compiler-plugin.version}</version>
-                                    
-        
-        </plugin>
-                                
-        
-        <plugin>
-                                        
-          
-          <groupId>org.apache.maven.plugins</groupId>
-                                        
-          
-          <artifactId>maven-dependency-plugin</artifactId>
-                                        
-          
-          <version>${maven-dependency-plugin.version}</version>
-                                    
-        
-        </plugin>
-                                
-        
-        <plugin>
-                                        
-          
-          <groupId>org.codehaus.mojo</groupId>
-                                        
-          
-          <artifactId>build-helper-maven-plugin</artifactId>
-                                        
-          
-          <version>3.3.0</version>
-                                    
-        
-        </plugin>
-                            
-                
-        
-        <plugin>
-                                        
-          
-          <groupId>org.codehaus.mojo</groupId>
-                                        
-          
-          <artifactId>exec-maven-plugin</artifactId>
-                                        
-          
-          <version>3.1.0</version>
-                                    
-        
-        </plugin>
-                            
-      
-      </plugins>
-                    
-    
-    </pluginManagement>
-                
-    
-    <plugins>
-                        
-      
-      <plugin>
-                                
-        
-        <groupId>org.apache.maven.plugins</groupId>
-                                
-        
-        <artifactId>maven-compiler-plugin</artifactId>
-                                
-        
-        <inherited>true</inherited>
-                                
-        
-        <configuration>
-                                        
-          
-          <encoding>${project.build.sourceEncoding}</encoding>
-                                        
-          
-          <release>17</release>
-                                    
-        
-        </configuration>
-                            
-      
-      </plugin>
-                        
-      
-      <plugin>
-                                
-        
-        <groupId>org.apache.maven.plugins</groupId>
-                                
-        
-        <artifactId>maven-javadoc-plugin</artifactId>
-                                
-        
-        <version>${maven-javadoc-plugin.version}</version>
-                                
-        
-        <executions>
-                                        
-          
-          <execution>
-                                                
-            
-            <id>attach-javadocs</id>
-                                                
-            
-            <goals>
-                                                        
-              
-              <goal>jar</goal>
-                                                    
-            
-            </goals>
-                                            
-          
-          </execution>
-                                    
-        
-        </executions>
-                            
-      
-      </plugin>
-                        
-      
-      <plugin>
-                                
-        
-        <groupId>org.apache.maven.plugins</groupId>
-                                
-        
-        <artifactId>maven-resources-plugin</artifactId>
-                                
-        
-        <version>2.4.3</version>
-                                
-        
-        <configuration>
-                                        
-          
-          <encoding>${project.build.sourceEncoding}</encoding>
-                                    
-        
-        </configuration>
-                            
-      
-      </plugin>
-                        
-      
-      <plugin>
-                                
-        
-        <groupId>org.apache.maven.plugins</groupId>
-                                
-        
-        <artifactId>maven-source-plugin</artifactId>
-                                
-        
-        <version>3.2.1</version>
-                                
-        
-        <executions>
-                                        
-          
-          <execution>
-                                                
-            
-            <id>attach-sources</id>
-                             
-                        
-            
-            <goals>
-                                                        
-              
-              <goal>jar</goal>
-                                  
-                        
-            
-            </goals>
-                                            
-          
-          </execution>
-                                    
-        
-        </executions>
-                            
-      
-      </plugin>
-                        
-      
-      <plugin>
-                                
-        
-        <groupId>org.sonatype.plugins</groupId>
-                                
-        
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-                                
-        
-        <version>1.6.13</version>
-                                
-        
-        <extensions>true</extensions>
-                                
-        
-        <configuration>
-                                        
-          
-          <serverId>ossrh</serverId>
-                                        
-          
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                                        
-          
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                                    
-        
-        </configuration>
-                            
-      
-      </plugin>
-                    
-    
-    </plugins>
-            
-  
-  </build>
-        
-  
-  <developers>
-                
-    
-    <developer>
-                        
-      
-      <id>mriem</id>
-                        
-      
-      <name>Manfred Riem</name>
-                        
-      
-      <email>mriem@manorrock.com</email>
-                        
-      
-      <organization>Manorrock.com</organization>
-                    
-    
-    </developer>
-                
-    
-  
-  </developers>
-        
-  
-  <distributionManagement>
-                
-    
-    <snapshotRepository>
-                        
-      
-      <id>ossrh</id>
-                        
-      
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                    
-    
-    </snapshotRepository>
-            
-  
-  </distributionManagement>
-        
-  
-  <profiles>
-                
-    
-    <profile>
-                        
-      
-      <id>release</id>
-                        
-      
-      <build>
-                                
-        
+    <url>https://github.com/manorrock/ocelot</url>
+    <properties>
+        <!-- dependencies -->
+        <azure-sdk-bom.version>1.2.11</azure-sdk-bom.version>
+        <jakarta.version>10.0.0</jakarta.version>
+        <junit.version>5.10.0</junit.version>
+        <groovy.version>4.0.13</groovy.version>
+        <piranha.version>23.10.0</piranha.version>
+        <!-- other -->
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- plugins -->
+        <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
+        <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0</maven-failsafe-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
+        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+    </properties>
+    <licenses>
+        <license>
+            <name>Manorrock License</name>
+            <url>https://github.com/manorrock/ocelot/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+    <modules>
+        <module>azure-appconfig</module>
+        <module>azure-keyvault</module>
+    </modules>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+        
+  
+    <developers>
+                
+    
+        <developer>
+                        
+      
+            <id>mriem</id>
+                        
+      
+            <name>Manfred Riem</name>
+                        
+      
+            <email>mriem@manorrock.com</email>
+                        
+      
+            <organization>Manorrock.com</organization>
+                    
+    
+        </developer>
+                
+    
+  
+    </developers>
+        
+  
+    <distributionManagement>
+                
+    
+        <snapshotRepository>
+                        
+      
+            <id>ossrh</id>
+                        
+      
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                    
+    
+        </snapshotRepository>
+            
+  
+    </distributionManagement>
+        
+  
+    <profiles>
+                
+    
+        <profile>
+                        
+      
+            <id>release</id>
+                        
+      
+            <build>
+                                
+        
+                <plugins>
                                         
           
-          <plugin>
+                    <plugin>
                                                 
             
-            <groupId>org.apache.maven.plugins</groupId>
+                        <groupId>org.apache.maven.plugins</groupId>
                                                 
             
-            <artifactId>maven-gpg-plugin</artifactId>
+                        <artifactId>maven-gpg-plugin</artifactId>
                                                 
             
-            <version>1.6</version>
+                        <version>1.6</version>
                                                 
             
-            <executions>
+                        <executions>
                                                         
               
-              <execution>
+                            <execution>
                                                                 
                 
-                <id>sign-artifacts</id>
+                                <id>sign-artifacts</id>
                                                                 
                 
-                <phase>verify</phase>
+                                <phase>verify</phase>
                                                                 
                 
-                <goals>
+                                <goals>
                                                                         
                   
-                  <goal>sign</goal>
+                                    <goal>sign</goal>
                                                                     
                 
-                </goals>
+                                </goals>
                                                             
               
-              </execution>
+                            </execution>
                                                     
             
-            </executions>
+                        </executions>
                                                 
             
-            <configuration>
-                                                        
-              
-              <gpgArguments>
-                                                                
-                
-                <arg>--pinentry-mode</arg>
-                                                                
-                
-                <arg>loopback</arg>
-                                                            
-              
-              </gpgArguments>
-                                                    
-            
-            </configuration>
-                                            
-          
-          </plugin>
-                                    
-        
-        </plugins>
-                            
-      
-      </build>
-                    
-    
-    </profile>
-            
-  
-  </profiles>
-        
-  
-  <scm>
-                
-    
-    <connection>scm:git:git://github.com/manorrock/ocelot.git</connection>
-                
-    
-    <developerConnection>scm:git:git@github.com:manorrock/ocelot.git</developerConnection>
-                
-    
-    <url>https://github.com/manorrock/ocelot</url>
-            
-  
-  </scm>
-    
-
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>        
+    <scm>
+        <connection>scm:git:git://github.com/manorrock/ocelot.git</connection>
+        <developerConnection>scm:git:git@github.com:manorrock/ocelot.git</developerConnection>
+        <url>https://github.com/manorrock/ocelot</url>
+    </scm>
 </project>
