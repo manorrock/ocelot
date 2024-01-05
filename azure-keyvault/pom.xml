@@ -12,6 +12,7 @@
     <packaging>war</packaging>
     <name>Manorrock Ocelot - Azure Key Vault</name>
     <properties>
+        <!-- dependencies -->
         <!-- other -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- plugins -->
@@ -130,7 +131,7 @@
                     <images>
                         <image>
                             <alias>ocelot-azure-keyvault</alias>
-                            <name>ghcr.io/manorrock/ocelot-azure-keyvault:latest</name>
+                            <name>ghcr.io/manorrock/ocelot-azure-keyvault:%l</name>
                             <build>
                                 <buildx>
                                     <platforms>
