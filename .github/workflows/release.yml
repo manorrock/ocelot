@@ -35,3 +35,5 @@ jobs:
       run: |
         cd azure-keyvault
         mvn -B -DskipTests=true -DskipITs=true -ntp docker:build docker:push
+        cd ../azure-appconfig
+        mvn -B -DskipTests=true -DskipITs=true -ntp docker:build docker:push
