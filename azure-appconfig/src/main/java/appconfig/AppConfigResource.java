@@ -2,8 +2,10 @@ package appconfig;
 
 import jakarta.inject.Singleton;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import java.util.HashMap;
 
 /**
  * REST API for Azure App Configuration.
@@ -13,6 +15,11 @@ import jakarta.ws.rs.PathParam;
 @Path("kv")
 @Singleton
 public class AppConfigResource {
+    
+    /**
+     * Stores the key/value store.
+     */
+    private HashMap<String, KeyValueBundle> kv = new HashMap<>();
 
     /**
      * Get the key value.
@@ -23,15 +30,32 @@ public class AppConfigResource {
      * </p>
      *
      * @param key the key.
-     * @return the value.
+     * @return the key-value bundle.
      */
     @Path("{key}")
     @GET
     public KeyValueBundle getKeyValue(
             @PathParam("key") String key) {
-        KeyValueBundle bundle = new KeyValueBundle();
-        bundle.setKey(key);
-        bundle.setValue("my_value");
-        return bundle;
+        return kv.get(key);
+    }
+    
+    /**
+     * Set the key.
+     * 
+     * <p>
+     * For more inforation, see
+     * https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api-key-value#set-key
+     * </p>
+     * 
+     * @param key the key.
+     * @param body the JSON body.
+     * @return the key-value bundle.
+     */
+    @Path("{key}")
+    @PUT
+    public KeyValueBundle setKeyValue(
+        @PathParam("key") String key, KeyValueBundle body) {
+        kv.put(key, body);
+        return body;
     }
 }
