@@ -44,24 +44,10 @@ For example:
 
 Replace $PWD/certs with the local directory that contains the `keystore` file.
 
-## What is the Key Vault URL?
+## What is the App Configuration URL?
 
-If the port used is `8201` and the name of the keyvault is 'mykeyvault' the 
-Key Vault URL would be:
+If the port used is `8201` the App Configuration URL would be:
 
 ```text
-  https://localhost:8201/api/myappconfig
-```
-
-Note if you change the port number from `8201` to something else you will need
-to also pass the BASE_URL environment variable on the command-line as the 
-simulator needs to know the outside Key Vault base URL to properly generate
-ids, links and what not.
-
-For example:
-
-```bash
-  docker run --rm -it -p 7101:8101 -p 7201:8201 \
-    -e BASE_URL=https://localhost:7201 \
-    -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-appconfig
+  https://localhost:8201/api
 ```

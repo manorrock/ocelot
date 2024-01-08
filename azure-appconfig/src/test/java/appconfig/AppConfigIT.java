@@ -42,6 +42,7 @@ public class AppConfigIT {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(BODY_AND_HEADERS))
                 .buildClient();
         
+        configClient.setConfigurationSetting("key", "label", "my_value");
         assertEquals("my_value", configClient.getConfigurationSetting("key", "label").getValue());
     }
 }
