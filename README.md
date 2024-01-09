@@ -9,6 +9,7 @@ We welcome feedback!
 
 ## Available simulators
 
+1. [Azure App Configuration](azure-appconfig/README.md)
 1. [Azure Key Vault](azure-keyvault/README.md)
 
 ## How do I contribute?
