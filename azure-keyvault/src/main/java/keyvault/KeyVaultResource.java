@@ -3,12 +3,14 @@ package keyvault;
 import jakarta.inject.Singleton;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Context;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +84,6 @@ public class KeyVaultResource {
      * https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/set-secret/set-secret?tabs=HTTP
      * </p>
      *
-     * @param contentLength the content length.
      * @param keyVault the key vault.
      * @param secretName the secret name.
      * @param inputStream the input stream.
@@ -91,18 +92,12 @@ public class KeyVaultResource {
     @Path("{name}/secrets/{secretName}")
     @PUT
     public SecretBundle setSecret(
-            @HeaderParam("Content-Length") Integer contentLength,
             @PathParam("name") String keyVault,
-            @PathParam("secretName") String secretName, InputStream inputStream) {
+            @PathParam("secretName") String secretName, 
+            InputStream inputStream) {
 
-        SecretBundle secret;
-
-        if (contentLength != null && contentLength > 0) {
-            Jsonb jsonb = JsonbBuilder.create();
-            secret = jsonb.fromJson(inputStream, SecretBundle.class);
-        } else {
-            throw new WebApplicationException(500);
-        }
+        Jsonb jsonb = JsonbBuilder.create();
+        SecretBundle secret = jsonb.fromJson(inputStream, SecretBundle.class);
         
         if (secret.getId() == null) {
             secret.setId(getBaseUrl() + "/keyvault/" + keyVault + "/secrets/" + secretName + "/1");
