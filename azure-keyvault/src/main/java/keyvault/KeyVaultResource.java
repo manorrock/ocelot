@@ -1,16 +1,14 @@
 package keyvault;
 
 import jakarta.inject.Singleton;
+import jakarta.json.JsonException;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Context;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +95,13 @@ public class KeyVaultResource {
             InputStream inputStream) {
 
         Jsonb jsonb = JsonbBuilder.create();
-        SecretBundle secret = jsonb.fromJson(inputStream, SecretBundle.class);
+        SecretBundle secret;
+        
+        try { 
+            secret = jsonb.fromJson(inputStream, SecretBundle.class);
+        } catch(JsonException je) {
+            secret = new SecretBundle();
+        }
         
         if (secret.getId() == null) {
             secret.setId(getBaseUrl() + "/keyvault/" + keyVault + "/secrets/" + secretName + "/1");
