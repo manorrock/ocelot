@@ -33,7 +33,7 @@ public class CertificateResource {
     public byte[] download() {
         ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
         try {
-            java.nio.file.Path certificatePath = new File("/home/piranha/certs/keystore").toPath();
+            java.nio.file.Path certificatePath = new File("/usr/local/tomcat/conf/certs/keystore").toPath();
             Files.copy(certificatePath, byteOutput);
         } catch(IOException ioe) {
         }

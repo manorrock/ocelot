@@ -30,10 +30,22 @@
     </dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>${jakarta.version}</version>
-            <scope>provided</scope>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-jetty-servlet</artifactId>
+            <version>${jersey.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-binding</artifactId>
+            <version>${jersey.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -111,7 +123,7 @@
                     </environmentVariables>
                     <systemPropertyVariables>
                         <javax.net.ssl.trustStore>${basedir}/src/test/certs/keystore</javax.net.ssl.trustStore>
-                        <javax.net.ssl.trustStorePassword>password</javax.net.ssl.trustStorePassword>
+                        <javax.net.ssl.trustStorePassword>changeit</javax.net.ssl.trustStorePassword>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -149,7 +161,7 @@
                                 </ports>
                                 <volumes>
                                     <bind>
-                                        <volume>${basedir}/src/test/certs:/home/piranha/certs</volume>
+                                        <volume>${basedir}/src/test/certs:/usr/local/tomcat/conf/certs</volume>
                                     </bind>
                                 </volumes>
                                 <wait> 

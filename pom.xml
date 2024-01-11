@@ -15,6 +15,7 @@
         <!-- dependencies -->
         <azure-sdk-bom.version>1.2.11</azure-sdk-bom.version>
         <jakarta.version>10.0.0</jakarta.version>
+        <jersey.version>3.1.5</jersey.version>
         <junit.version>5.10.0</junit.version>
         <groovy.version>4.0.13</groovy.version>
         <piranha.version>23.10.0</piranha.version>
