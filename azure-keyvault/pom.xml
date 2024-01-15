@@ -164,6 +164,9 @@
                                         <volume>${basedir}/src/test/certs:/usr/local/tomcat/conf/certs</volume>
                                     </bind>
                                 </volumes>
+                                <log>
+                                    <file>${project.build.directory}/container.log</file>
+                                </log>
                                 <wait> 
                                     <http>
                                         <url>http://localhost:8100/</url>
@@ -173,6 +176,7 @@
                             </run>
                         </image>
                     </images>
+                    <showLogs>true</showLogs>
                 </configuration>
                 <executions>
                     <execution>
@@ -189,6 +193,9 @@
                             <goal>build</goal>
                             <goal>start</goal>
                         </goals>
+                        <configuration>
+                            <logStdout>true</logStdout>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>stop</id>
