@@ -3,11 +3,7 @@ package keyvault;
 import jakarta.inject.Singleton;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-<<<<<<< Updated upstream
-import jakarta.servlet.http.HttpServletResponse;
-=======
 import jakarta.json.bind.JsonbException;
->>>>>>> Stashed changes
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
