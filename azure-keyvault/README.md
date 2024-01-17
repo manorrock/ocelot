@@ -39,7 +39,7 @@ For example:
 
 ```bash
   docker run --rm -it -p 8100:8100 -p 8200:8200 \
-    -v $PWD/certs:/usr/local/tomcat/conf/certs manorrock/ocelot-azure-keyvault
+    -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-keyvault
 ```
 
 Replace $PWD/certs with the local directory that contains the `keystore` file.
@@ -63,7 +63,7 @@ For example:
 ```bash
   docker run --rm -it -p 7100:8100 -p 7200:8200 \
     -e BASE_URL=https://localhost:7200 \
-    -v $PWD/certs:/usr/local/tomcat/conf/certs manorrock/ocelot-azure-keyvault
+    -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-keyvault
 ```
 
 ## Supported operations
