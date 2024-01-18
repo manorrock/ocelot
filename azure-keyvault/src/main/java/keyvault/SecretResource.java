@@ -17,18 +17,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * REST API for Azure KeyVault.
+ * REST API for Azure KeyVault Secrets.
+ * 
+ * <p>
+ *  Reworked as the Azure SDK for .NET does validation on the secret id and as
+ *  a consequence we cannot host multiple key vaults on the same base URL. See
+ *  https://github.com/Azure/azure-sdk-for-net/blob/4abfa9feb47a6422ba627ca6517ed3e4014c67f9/sdk/keyvault/Azure.Security.KeyVault.Shared/src/KeyVaultIdentifier.cs#L54
+ * </p>
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Path("keyvault")
+@Path("secrets")
 @Singleton
-public class KeyVaultResource {
+public class SecretResource {
 
     /**
      * Stores the secrets.
      */
-    private Map<String, Map<String, SecretBundle>> secrets = new HashMap<>();
+    private final Map<String, SecretBundle> secrets = new HashMap<>();
 
     /**
      * Get the secret.
@@ -38,16 +44,14 @@ public class KeyVaultResource {
      * https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?tabs=HTTP
      * </p>
      *
-     * @param keyVault the key vault.
      * @param secretName the secret name.
      * @return the secret value.
      */
-    @Path("{name}/secrets/{secretName}")
+    @Path("{secretName}")
     @GET
     public Response getSecret(
-            @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName) {
-        return getSecretWithVersion(keyVault, secretName, null);
+        return getSecretWithVersion(secretName, null);
     }
 
     /**
@@ -58,23 +62,17 @@ public class KeyVaultResource {
      * https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?tabs=HTTP
      * </p>
      *
-     * @param keyVault the key vault.
      * @param secretName the secret name.
      * @param secretVersion the secret version.
      * @return the secret value.
      */
-    @Path("{name}/secrets/{secretName}/{secretVersion}")
+    @Path("{secretName}/{secretVersion}")
     @GET
     public Response getSecretWithVersion(
-            @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName,
             @PathParam("secretVersion") String secretVersion) {
         
-        SecretBundle secret = null;
-        Map<String, SecretBundle> secretsMap = secrets.get(keyVault);
-        if (secretsMap != null) {
-            secret = secretsMap.get(secretName);
-        }
+        SecretBundle secret = secrets.get(secretName);
         return Response.ok(secret).header("Connection", "close").build();
     }
 
@@ -86,16 +84,14 @@ public class KeyVaultResource {
      * https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/set-secret/set-secret?tabs=HTTP
      * </p>
      *
-     * @param keyVault the key vault.
      * @param secretName the secret name.
      * @param inputStream the input stream.
      * @param contentLength the content length.
      * @return the response.
      */
-    @Path("{name}/secrets/{secretName}")
+    @Path("{secretName}")
     @PUT
     public Response setSecret(
-            @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName, 
             @HeaderParam("Content-Length") Integer contentLength,
             InputStream inputStream) {
@@ -125,16 +121,10 @@ public class KeyVaultResource {
         }
         
         if (secret.getId() == null) {
-            secret.setId(getBaseUrl() + "/keyvault/" + keyVault + "/secrets/" + secretName + "/1");
+            secret.setId(getBaseUrl() + "/secrets/" + secretName + "/1");
         }
 
-        Map<String, SecretBundle> secretsMap = secrets.get(keyVault);
-        if (secretsMap == null) {
-            secretsMap = new HashMap<>();
-            secrets.put(keyVault, secretsMap);
-        }
-
-        secretsMap.put(secretName, secret);
+        secrets.put(secretName, secret);
         return Response.ok(secret).header("Connection", "close").build();
     }
 

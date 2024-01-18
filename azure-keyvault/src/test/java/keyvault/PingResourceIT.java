@@ -23,7 +23,7 @@ class PingResourceIT {
     @Test
     void testPing() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8100/api/ping")).build();
+        HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8100/ping")).build();
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
         assertEquals("OK", response.body());
     }
