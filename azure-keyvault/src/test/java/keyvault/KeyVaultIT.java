@@ -6,7 +6,6 @@ import static com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,23 +17,25 @@ import org.junit.jupiter.api.Test;
  */
 public class KeyVaultIT {
 
+    /**
+     * Stores the credential.
+     */
     private TokenCredential credential;
 
-    public KeyVaultIT() {
-    }
-
+    /**
+     * Setup the credential.
+     */
     @BeforeEach
     public void setUp() {
         credential = new BasicAuthenticationCredential("username", "password");
     }
 
-    @AfterEach
-    public void tearDown() {
-    }
-
+    /**
+     * Test setting and then getting a secret.
+     */
     @Test
     public void testGetSecret() {
-        String keyVaultUri = "https://localhost:8200/api/keyvault/myKeyvault";
+        String keyVaultUri = "https://localhost:8200";
 
         SecretClient keyClient = new SecretClientBuilder()
                 .vaultUrl(keyVaultUri)

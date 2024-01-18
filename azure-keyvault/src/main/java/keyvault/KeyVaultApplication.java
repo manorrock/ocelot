@@ -8,6 +8,6 @@ import jakarta.ws.rs.core.Application;
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationPath("api")
+@ApplicationPath("")
 public class KeyVaultApplication extends Application {  
 }

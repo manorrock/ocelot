@@ -9,31 +9,31 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 /**
- * Certificate download endpoint.
+ * Keystore download endpoint.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Path("certificate")
+@Path("keystore")
 @Singleton
-public class CertificateResource {
+public class KeystoreResource {
 
     /**
      * Constructor.
      */
-    public CertificateResource() {
+    public KeystoreResource() {
     }
     
     /**
-     * Download the certificate
+     * Download the keystore
      * 
-     * @return the certificate.
+     * @return the keystore.
      */
     @Path("")
     @GET
     public byte[] download() {
         ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
         try {
-            java.nio.file.Path certificatePath = new File("/usr/local/tomcat/conf/certs/keystore").toPath();
+            java.nio.file.Path certificatePath = new File("/home/piranha/certs/keystore").toPath();
             Files.copy(certificatePath, byteOutput);
         } catch(IOException ioe) {
         }
