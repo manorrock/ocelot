@@ -21,7 +21,7 @@ http://localhost:8100/
 If you want to generate your own certificate you can use the command-line below:
 
 ```
-  keytool -genkey -alias tomcat -keyalg RSA -keystore keystore \
+  keytool -genkey -alias self-signed -keyalg RSA -keystore keystore \
     -keysize 4096 -storepass password -dname "CN=localhost"
 ```
 
@@ -76,7 +76,7 @@ For example:
     -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-keyvault
 ```
 
-## How do you use this with the Azure SDK for Java?
+## How do you use the simulator with the Azure SDK for Java?
 
 The sample snippet below shows you how you would interact with the simulator
 using the Azure SDK for Java.
@@ -93,6 +93,49 @@ using the Azure SDK for Java.
 
     secretClient.setSecret("mySecret", "mySecretValue");
     String value = secretClient.getSecret("mySecret");
+```
+
+## How do you use the simulator with the Azure SDK for .NET?
+
+The sample snippet below shows you how you would interact with the simulator
+using the Azure SDK for .NET
+
+```csharp
+  var keyVaultUrl = "https://localhost:8200";
+  var secretClient = new SecretClient(new Uri(keyVaultUrl), 
+      new TestCredential(), CreateDefaultOptions());
+  var value = secretClient.GetSecret("mySecret"); 
+
+  SecretClientOptions CreateDefaultOptions() =>
+    new()
+    {
+        DisableChallengeResourceVerification = true,
+        Diagnostics =
+        {
+            LoggedContentSizeLimit = 8192,
+            IsLoggingContentEnabled = true
+        },
+            Retry =
+        {
+            Delay = TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+        }
+    };
+
+    internal class TestCredential : TokenCredential
+    {
+        public override AccessToken GetToken(TokenRequestContext requestContext, CancellationToken cancellationToken)
+        {
+            return new AccessToken("test", DateTimeOffset.UtcNow.AddHours(100));
+        }
+
+        public override ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken)
+        {
+            return new ValueTask<AccessToken>(GetToken(requestContext, cancellationToken));
+        }
+    }
 ```
 
 ## Supported operations
