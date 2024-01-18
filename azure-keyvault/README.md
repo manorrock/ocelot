@@ -14,12 +14,7 @@ To run the simulator use the command line below:
 ## Validate the simulator is up and running
 
 To validate the simulator is up and running point your browser to 
-http://localhost:8100/ Or if you want to access the simulator over HTTPS (which
-is what the Azure SDK would use) browse to https://localhost:8200
-
-Note if your browser complains about the HTTPS link above it means you browser
-does not trust its certificate and you will have to import it into your browser
-certificate store.
+http://localhost:8100/
 
 ## Generate your own certificate
 
@@ -27,8 +22,24 @@ If you want to generate your own certificate you can use the command-line below:
 
 ```
   keytool -genkey -alias tomcat -keyalg RSA -keystore keystore \
-    -keysize 4096 -storepass changeit -dname "CN=localhost"
+    -keysize 4096 -storepass password -dname "CN=localhost"
 ```
+
+## Use your .NET development certificate
+
+You first must to export the certificate into a .pfx file.
+
+```
+  dotnet dev-certs https -ep cert.pfx -p password
+```
+
+Then you must convert the .pfx file to a Java keystore.
+
+```
+  keytool -importkeystore -srckeystore cert.pfx -srcstorepass password -destkeystore keystore -deststorepass password
+```
+
+And now you can use the instructions below to use the keystore.
 
 ## Mounting your own certificate directory
 
@@ -46,17 +57,16 @@ Replace $PWD/certs with the local directory that contains the `keystore` file.
 
 ## What is the Key Vault URL?
 
-If the port used is `8200` and the name of the keyvault is 'mykeyvault' the 
-Key Vault URL would be:
+If the port used is `8200` the Key Vault URL would be:
 
 ```text
-  https://localhost:8200/api/mykeyvault
+  https://localhost:8200/
 ```
 
 Note if you change the port number from `8200` to something else you will need
 to also pass the BASE_URL environment variable on the command-line as the 
 simulator needs to know the outside Key Vault base URL to properly generate
-ids, links and what not.
+secret ids.
 
 For example:
 
