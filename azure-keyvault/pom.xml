@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.manorrock.ocelot</groupId>
         <artifactId>project</artifactId>
-        <version>23.8.0-SNAPSHOT</version>
+        <version>24.1.3</version>
     </parent>
     <artifactId>ocelot-azure-keyvault</artifactId>
     <packaging>war</packaging>
