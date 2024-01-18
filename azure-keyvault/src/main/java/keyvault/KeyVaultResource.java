@@ -5,10 +5,13 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
+import static jakarta.ws.rs.core.Response.Status.UNAUTHORIZED;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +44,7 @@ public class KeyVaultResource {
      */
     @Path("{name}/secrets/{secretName}")
     @GET
-    public SecretBundle getSecret(
+    public Response getSecret(
             @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName) {
         return getSecretWithVersion(keyVault, secretName, null);
@@ -62,16 +65,17 @@ public class KeyVaultResource {
      */
     @Path("{name}/secrets/{secretName}/{secretVersion}")
     @GET
-    public SecretBundle getSecretWithVersion(
+    public Response getSecretWithVersion(
             @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName,
             @PathParam("secretVersion") String secretVersion) {
+        
         SecretBundle secret = null;
         Map<String, SecretBundle> secretsMap = secrets.get(keyVault);
         if (secretsMap != null) {
             secret = secretsMap.get(secretName);
         }
-        return secret;
+        return Response.ok(secret).header("Connection", "close").build();
     }
 
     /**
@@ -85,15 +89,32 @@ public class KeyVaultResource {
      * @param keyVault the key vault.
      * @param secretName the secret name.
      * @param inputStream the input stream.
+     * @param contentLength the content length.
      * @return the response.
      */
     @Path("{name}/secrets/{secretName}")
     @PUT
-    public SecretBundle setSecret(
+    public Response setSecret(
             @PathParam("name") String keyVault,
             @PathParam("secretName") String secretName, 
+            @HeaderParam("Content-Length") Integer contentLength,
             InputStream inputStream) {
 
+        /*
+         * See https://github.com/Azure/azure-sdk-for-java/blob/789fef47a9de372fda4fbbb4185b4e8d179017c0/sdk/keyvault/azure-security-keyvault-keys/src/main/java/com/azure/security/keyvault/keys/implementation/KeyVaultCredentialPolicy.java#L118
+         */
+        if (contentLength == null || contentLength == 0) {
+            Error error = new Error();
+            error.setCode("Unauthorized");
+            error.setMessage("AKV10000: Request is missing a Bearer or PoP token.");
+            return Response
+                    .status(UNAUTHORIZED)
+                    .entity(error)
+                    .header("WWW-Authenticate", "Bearer authorization=\"https://localhost:8200/keyvault\", resource=\"https://vault.azure.net\"")
+                    .header("Connection", "close")
+                    .build();
+        }
+        
         Jsonb jsonb = JsonbBuilder.create();
         SecretBundle secret;
         
@@ -114,7 +135,7 @@ public class KeyVaultResource {
         }
 
         secretsMap.put(secretName, secret);
-        return secret;
+        return Response.ok(secret).header("Connection", "close").build();
     }
 
     /**

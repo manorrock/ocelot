@@ -19,13 +19,13 @@ import org.junit.jupiter.api.Test;
 public class KeyVaultIT {
 
     private TokenCredential credential;
-    
+
     public KeyVaultIT() {
     }
 
     @BeforeEach
     public void setUp() {
-        credential = new BasicAuthenticationCredential("", "");
+        credential = new BasicAuthenticationCredential("username", "password");
     }
 
     @AfterEach
@@ -40,8 +40,9 @@ public class KeyVaultIT {
                 .vaultUrl(keyVaultUri)
                 .credential(credential)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(BODY_AND_HEADERS))
+                .disableChallengeResourceVerification()
                 .buildClient();
-        
+
         keyClient.setSecret("mySecret", "mySecretValue");
         assertEquals("mySecretValue", keyClient.getSecret("mySecret").getValue());
     }
