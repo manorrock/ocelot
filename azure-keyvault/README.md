@@ -76,6 +76,25 @@ For example:
     -v $PWD/certs:/home/piranha/certs manorrock/ocelot-azure-keyvault
 ```
 
+## How do you use this with the Azure SDK for Java?
+
+The sample snippet below shows you how you would interact with the simulator
+using the Azure SDK for Java.
+
+```java
+    var credential = new BasicAuthenticationCredential("username", "password");
+    var keyVaultUri = "https://localhost:8200";
+    var secretClient = new SecretClientBuilder()
+                .vaultUrl(keyVaultUri)
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(BODY_AND_HEADERS))
+                .disableChallengeResourceVerification()
+                .buildClient();
+
+    secretClient.setSecret("mySecret", "mySecretValue");
+    String value = secretClient.getSecret("mySecret");
+```
+
 ## Supported operations
 
 1. [Get Secret](https://learn.microsoft.com/en-us/rest/api/keyvault/secrets/get-secret/get-secret?view=rest-keyvault-secrets-7.4&tabs=HTTP)
