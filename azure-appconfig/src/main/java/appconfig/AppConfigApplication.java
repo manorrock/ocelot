@@ -4,10 +4,10 @@ import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
 /**
- * The Azure Key Vault application.
+ * The Azure App Configuration application.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationPath("api")
+@ApplicationPath("")
 public class AppConfigApplication extends Application {
 }

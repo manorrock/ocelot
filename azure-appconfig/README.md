@@ -17,10 +17,6 @@ To validate the simulator is up and running point your browser to
 http://localhost:8101/ Or if you want to access the simulator over HTTPS (which
 is what the Azure SDK would use) browse to https://localhost:8201
 
-Note if your browser complains about the HTTPS link above it means you browser
-does not trust its certificate and you will have to import it into your browser
-certificate store.
-
 ## Generate your own certificate
 
 If you want to generate your own certificate you can use the command-line below:
@@ -29,6 +25,23 @@ If you want to generate your own certificate you can use the command-line below:
   keytool -genkey -alias self-signed -keyalg RSA -keystore keystore \
     -keysize 4096 -storepass password -dname "CN=localhost"
 ```
+
+## Use your .NET development certificate
+
+You first must to export the certificate into a .pfx file.
+
+```
+  dotnet dev-certs https -ep cert.pfx -p password
+```
+
+Then you must convert the .pfx file to a Java keystore.
+
+```
+  keytool -importkeystore -srckeystore cert.pfx -srcstorepass password \
+    -destkeystore keystore -deststorepass password
+```
+
+And now you can use the instructions below to use the keystore.
 
 ## Mounting your own certificate directory
 
@@ -49,5 +62,5 @@ Replace $PWD/certs with the local directory that contains the `keystore` file.
 If the port used is `8201` the App Configuration URL would be:
 
 ```text
-  https://localhost:8201/api
+  https://localhost:8201
 ```
