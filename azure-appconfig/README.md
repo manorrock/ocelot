@@ -125,3 +125,11 @@ using the Azure SDK for .NET
         }
     }
 ```
+## Supported operations
+
+1. [Get Key-Value](https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api-key-value#get-key-value)
+1. [Set Key](https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api-key-value#set-key)
+
+## Official Azure App Configuration documentation
+
+See the [REST API](https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api/).
