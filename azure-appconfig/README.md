@@ -83,3 +83,45 @@ using the Azure SDK for Java.
     configClient.setConfigurationSetting("key", "label", "my_value");
     String value = configClient.getConfigurationSetting("key", "label").getValue());
 ```
+
+## How do you use the simulator with the Azure SDK for .NET?
+
+The sample snippet below shows you how you would interact with the simulator
+using the Azure SDK for .NET
+
+```csharp
+  var appConfigUrl = "https://localhost:8201";
+  var client = new ConfigurationClient(new Uri(appConfigUrl), 
+      new TestCredential(), CreateDefaultOptions());
+  var value = client.GetConfigurationSetting("myConfig"); 
+
+  ConfigurationClientOptions CreateDefaultOptions() =>
+    new()
+    {
+        Diagnostics =
+        {
+            LoggedContentSizeLimit = 8192,
+            IsLoggingContentEnabled = true
+        },
+            Retry =
+        {
+            Delay = TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+        }
+    };
+
+  internal class TestCredential : TokenCredential
+    {
+        public override AccessToken GetToken(TokenRequestContext requestContext, CancellationToken cancellationToken)
+        {
+            return new AccessToken("test", DateTimeOffset.UtcNow.AddHours(100));
+        }
+
+        public override ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken)
+        {
+            return new ValueTask<AccessToken>(GetToken(requestContext, cancellationToken));
+        }
+    }
+```
