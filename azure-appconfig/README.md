@@ -64,3 +64,22 @@ If the port used is `8201` the App Configuration URL would be:
 ```text
   https://localhost:8201
 ```
+
+## How do you use the simulator with the Azure SDK for Java?
+
+The sample snippet below shows you how you would interact with the simulator
+using the Azure SDK for Java.
+
+```java
+    var credential = new BasicAuthenticationCredential("username", "password");
+    var endpoint = "https://localhost:8201";
+
+    var configClient = new ConfigurationClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(BODY_AND_HEADERS))
+            .buildClient();
+        
+    configClient.setConfigurationSetting("key", "label", "my_value");
+    String value = configClient.getConfigurationSetting("key", "label").getValue());
+```
