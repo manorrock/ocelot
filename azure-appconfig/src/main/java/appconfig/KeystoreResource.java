@@ -13,14 +13,14 @@ import java.nio.file.Files;
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Path("certificate")
+@Path("keystore")
 @Singleton
-public class CertificateResource {
+public class KeystoreResource {
 
     /**
      * Constructor.
      */
-    public CertificateResource() {
+    public KeystoreResource() {
     }
     
     /**

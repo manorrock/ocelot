@@ -34,7 +34,7 @@ public class AppConfigIT {
 
     @Test
     public void testGetKeyValue() {
-        String endpoint = "https://localhost:8201/api";
+        String endpoint = "https://localhost:8201";
 
         ConfigurationClient configClient = new ConfigurationClientBuilder()
                 .endpoint(endpoint)
