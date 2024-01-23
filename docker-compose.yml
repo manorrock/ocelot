@@ -1,0 +1,12 @@
+services:
+  keyvault:
+    image: "ghcr.io/manorrock/ocelot-azure-keyvault:latest"
+    ports:
+      - "8100:8100"
+      - "8200:8200"
+  appconfig:
+    image: "ghcr.io/manorrock/ocelot-azure-appconfig:latest"
+    ports:
+      - "8101:8101"
+      - "8201:8201"
+
