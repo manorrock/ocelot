@@ -42,6 +42,7 @@
         <module>azure-appconfig</module>
         <module>azure-eventhubs</module>
         <module>azure-keyvault</module>
+        <module>azure-servicebus</module>
     </modules>
     <build>
         <pluginManagement>
