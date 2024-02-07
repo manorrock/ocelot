@@ -2,7 +2,6 @@ package eventhubs;
 
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
@@ -14,7 +13,6 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -40,16 +38,11 @@ public class EventHubsIT {
     /**
      * Test sending and receiving an event.
      */
-    @Disabled
     @Test
     public void testSendAndReceive() {
-        String keyVaultUri = "https://localhost:8202";
-
         try (EventHubProducerClient producer = new EventHubClientBuilder()
-                .customEndpointAddress(keyVaultUri)
+                .connectionString("Endpoint=sb://localhost/;SharedAccessKeyName=Name;SharedAccessKey=Value", "simulator")
                 .credential(credential)
-                .fullyQualifiedNamespace("localhost:8202")
-                .eventHubName("simulator")
                 .buildProducerClient()) {
             EventDataBatch batch = producer.createBatch();
             batch.tryAdd(new EventData("Send an event"));
@@ -57,10 +50,8 @@ public class EventHubsIT {
         }
 
         EventHubConsumerClient consumer = new EventHubClientBuilder()
-                .customEndpointAddress(keyVaultUri)
+                .connectionString("Endpoint=sb://localhost/;SharedAccessKeyName=Name;SharedAccessKey=Value", "simulator")
                 .credential(credential)
-                .fullyQualifiedNamespace("localhost:8202")
-                .eventHubName("simulator")
                 .prefetchCount(1)
                 .consumerGroup("$DEFAULT")
                 .buildConsumerClient();

@@ -36,6 +36,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>proton-j</artifactId>
+            <version>0.34.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
             <scope>test</scope>
@@ -123,6 +129,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -194,6 +201,7 @@
                     </execution>
                 </executions>
             </plugin>
+                        -->
         </plugins>
     </build>
 </project>
