@@ -33,7 +33,13 @@
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
             <version>${jakarta.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>protonj2</artifactId>
+            <version>1.0.0-M18</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -131,7 +137,7 @@
                     <images>
                         <image>
                             <alias>ocelot-azure-keyvault</alias>
-                            <name>ghcr.io/manorrock/ocelot-azure-eventhubs:%l</name>
+                            <name>ghcr.io/manorrock/ocelot-azure-servicebus:%l</name>
                             <build>
                                 <buildx>
                                     <platforms>

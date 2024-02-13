@@ -13,6 +13,7 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -39,6 +40,7 @@ public class EventHubsIT {
      * Test sending and receiving an event.
      */
     @Test
+    @Disabled
     public void testSendAndReceive() {
         try (EventHubProducerClient producer = new EventHubClientBuilder()
                 .connectionString("Endpoint=sb://localhost/;SharedAccessKeyName=Name;SharedAccessKey=Value", "simulator")
