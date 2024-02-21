@@ -12,6 +12,15 @@ We welcome feedback!
 1. [Azure App Configuration](azure-appconfig/README.md)
 1. [Azure Key Vault](azure-keyvault/README.md)
 
+## Quick start
+
+If you have Docker compose installed you can use the following command to
+start up the simulators locally:
+
+```shell
+  docker compose up 
+```
+
 ## How do I contribute?
 
 See [Contributing](CONTRIBUTING.md)
