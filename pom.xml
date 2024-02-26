@@ -47,6 +47,7 @@
         <module>azure-eventhubs</module>
         <module>azure-keyvault</module>
         <module>azure-servicebus</module>
+        <module>azure-storage</module>
     </modules>
     <dependencyManagement>
         <dependencies>
