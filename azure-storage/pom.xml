@@ -70,6 +70,7 @@
                     <release>${java.version}</release>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -92,6 +93,7 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -100,6 +102,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -170,7 +173,8 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>            
+            </plugin>
+            -->
         </plugins>
     </build>
 </project>
