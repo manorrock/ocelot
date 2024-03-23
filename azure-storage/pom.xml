@@ -70,7 +70,6 @@
                     <release>${java.version}</release>
                 </configuration>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -93,7 +92,6 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -102,7 +100,6 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!--
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -110,8 +107,8 @@
                 <configuration>
                     <images>
                         <image>
-                            <alias>ocelot-azure-keyvault</alias>
-                            <name>ghcr.io/manorrock/ocelot-azure-appconfig:%l</name>
+                            <alias>ocelot-azure-storage</alias>
+                            <name>ghcr.io/manorrock/ocelot-azure-storage:%l</name>
                             <build>
                                 <buildx>
                                     <platforms>
@@ -124,8 +121,8 @@
                             </build>
                             <run> 
                                 <ports> 
-                                    <port>8101:8101</port>
-                                    <port>8201:8201</port>
+                                    <port>8103:8103</port>
+                                    <port>8203:8203</port>
                                 </ports>
                                 <volumes>
                                     <bind>
@@ -134,7 +131,7 @@
                                 </volumes>
                                 <wait> 
                                     <http>
-                                        <url>http://localhost:8101/</url>
+                                        <url>http://localhost:8103/ping</url>
                                     </http>
                                     <time>20000</time>
                                 </wait>
@@ -174,7 +171,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
         </plugins>
     </build>
 </project>
