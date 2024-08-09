@@ -14,8 +14,9 @@ We welcome feedback!
 
 ## Quick start
 
-If you have Docker compose installed you can use the following command to
-start up the simulators locally:
+First, download the [docker-compose.yml](https://raw.githubusercontent.com/manorrock/ocelot/current/docker-compose.yml) file
+
+Then, you can use the following command to start up the simulators locally:
 
 ```shell
   docker compose up 
