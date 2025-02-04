@@ -2,6 +2,19 @@
 
 [![build](https://github.com/manorrock/ocelot/actions/workflows/build.yml/badge.svg)](https://github.com/manorrock/ocelot/actions/workflows/build.yml)
 
+_This repository is slated to be moved to the Manorrock Attic organization as it
+is no longer actively maintained. Unless someone takes the project on that we be
+done January 1st, 2026_
+
+For alternatives see the list below:
+
+1. Azurite emulator for Azure Storage
+1. Azure Service Bus emulator
+1. LocalStack for Azure 
+1. Azure Cosmos DB emulator
+1. Azure SQL Database emulator
+1. Azure Functions Core Tools
+
 Ever wondered if you can develop locally for the Cloud? Sure, you can! Give 
 Manorrock Ocelot a try.
 
